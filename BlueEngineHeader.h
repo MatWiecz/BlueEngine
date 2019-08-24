@@ -1,0 +1,6 @@
+#ifndef BLUEENGINE_BLUEENGINEHEADER_H
+#define BLUEENGINE_BLUEENGINEHEADER_H
+
+void hello();
+
+#endif
