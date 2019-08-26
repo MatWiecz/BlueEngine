@@ -50,7 +50,7 @@ namespace MatWiecz
         
         typedef class BaseObjectClassClass
         {
-            private:
+            protected:
             static unsigned int nextId;
             unsigned int id;
             BaseObjectClassFlags flags;
@@ -68,7 +68,7 @@ namespace MatWiecz
             BaseObjectClassClass();
             
             ~BaseObjectClassClass() = default;
-            
+    
             BaseObjectClassRetVal Create(BaseObjectClassClass *parentObject,
                                          std::string &objectName,
                                          float xPos, float yPos, float zPos,

@@ -3,3 +3,10 @@
 //
 
 #include "Camera.h"
+
+namespace MatWiecz
+{
+    namespace BlueEngine
+    {
+    }
+}
