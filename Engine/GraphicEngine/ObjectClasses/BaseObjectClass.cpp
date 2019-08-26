@@ -80,12 +80,30 @@ namespace MatWiecz
             return Success;
         }
         
+        BaseObjectClassRetVal BaseObjectClassClass::SetPos(
+            float xPos, float yPos, float zPos)
+        {
+            pos[0] = xPos;
+            pos[1] = yPos;
+            pos[2] = zPos;
+            return Success;
+        }
+        
         BaseObjectClassRetVal BaseObjectClassClass::SetPosFunction(
             PosFunction newPosFunction)
         {
             if (int(~(flags & ObjectCreated)))
                 return InvalidOperation;
             posFunction = newPosFunction;
+            return Success;
+        }
+        
+        BaseObjectClassRetVal BaseObjectClassClass::SetAngle(
+            float xAngle, float yAngle, float zAngle)
+        {
+            angle[0] = xAngle;
+            angle[2] = yAngle;
+            angle[2] = zAngle;
             return Success;
         }
         

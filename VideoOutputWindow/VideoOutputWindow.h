@@ -6,7 +6,7 @@
 #define BLUEENGINE_VIDEOOUTPUTWINDOW_H
 
 #include <windows.h>
-#include <GL/glu.h>
+#include <GL/gl.h>
 #include "../Common/Basics/BitField.hpp"
 
 namespace MatWiecz

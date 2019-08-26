@@ -80,8 +80,13 @@ namespace MatWiecz
             
             BaseObjectClassRetVal SetObjectFunction(ObjectFunction
                                                     newObjectFunction);
+    
+            BaseObjectClassRetVal SetPos (float xPos, float yPos, float zPos);
             
             BaseObjectClassRetVal SetPosFunction(PosFunction newPosFunction);
+    
+            BaseObjectClassRetVal SetAngle (float xAngle, float yAngle,
+                                          float zAngle);
             
             BaseObjectClassRetVal SetAngleFunction(AngleFunction
                                                    newAngleFunction);
