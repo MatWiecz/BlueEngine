@@ -3,4 +3,12 @@
 
 #include "Engine/Engine.h"
 
+namespace MatWiecz
+{
+    namespace BlueEngine
+    {
+        
+    }
+}
+
 #endif
