@@ -1,0 +1,8 @@
+//
+// Created by Mateusz on 2019-08-26.
+//
+
+#ifndef BLUEENGINE_GRAPHICENGINE_H
+#define BLUEENGINE_GRAPHICENGINE_H
+
+#endif //BLUEENGINE_GRAPHICENGINE_H

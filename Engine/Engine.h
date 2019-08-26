@@ -11,7 +11,9 @@ namespace MatWiecz
 {
     namespace BlueEngine
     {
-        struct EngineStatusStruct {};
+        struct EngineStatusStruct
+        {
+        };
         typedef BitField <EngineStatusStruct> EngineStatus;
         const EngineStatus EngineCreated;
         const EngineStatus EngineInitiated;
@@ -23,7 +25,9 @@ namespace MatWiecz
             
         } EngineRetVal;
         
-        struct EngineOperationModeStruct {};
+        struct EngineOperationModeStruct
+        {
+        };
         typedef BitField <EngineOperationModeStruct> EngineOperationMode;
         const EngineOperationMode EngineUserMode;
         const EngineOperationMode EngineDeveloperMode;
@@ -32,7 +36,7 @@ namespace MatWiecz
         typedef class EngineClass
         {
             private:
-    
+            
             EngineStatus status;
             
             
@@ -42,7 +46,7 @@ namespace MatWiecz
             ~EngineClass();
             
             EngineRetVal SetOperationMode(
-                const EngineOperationMode & mode);
+                const EngineOperationMode &mode);
             
             EngineRetVal Start();
             
