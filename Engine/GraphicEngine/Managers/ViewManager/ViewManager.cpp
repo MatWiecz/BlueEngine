@@ -8,14 +8,94 @@ namespace MatWiecz
 {
     namespace BlueEngine
     {
-        ViewManagerClass::ViewManagerClass(): status(0), activeCamera(0),
-                                              nextCameraId(1)
+        ViewManagerClass::ViewManagerClass(): status(0),
+                                              activeCamera(nullptr),
+                                              nextCameraId(1),
+                                              toUpdate(false)
         {
         }
         
         ViewManagerRetVal ViewManagerClass::Create()
         {
-            
+            status |= ViewManagerCreated;
+            return ViewManagerRetVal::Success;
+        }
+        
+        ViewManagerRetVal ViewManagerClass::RegisterCamera(Camera *camera,
+                                                           unsigned int *retCameraId)
+        {
+            if (int(~status & ViewManagerCreated))
+                return ViewManagerRetVal::InvalidOperation;
+            if (camera == nullptr || retCameraId == nullptr
+                || camera->IsCreated())
+                return ViewManagerRetVal::InvalidArgument;
+            for (auto &record : cameras)
+                if (record.second->GetObjectId() == camera->GetObjectId())
+                    return ViewManagerRetVal::CameraAlreadyRegistered;
+            cameras.push_back(std::pair <unsigned int, Camera *>(nextCameraId,
+                                                                 camera));
+            *retCameraId = nextCameraId++;
+            return ViewManagerRetVal::Success;
+        }
+        
+        ViewManagerRetVal ViewManagerClass::ActivateCamera(
+            unsigned int retCameraId)
+        {
+            if (int(~status & ViewManagerCreated))
+                return ViewManagerRetVal::InvalidOperation;
+            for (auto &record : cameras)
+                if (record.first == retCameraId)
+                {
+                    activeCamera = record.second;
+                    return ViewManagerRetVal::Success;
+                }
+            toUpdate = true;
+            return ViewManagerRetVal::InvalidArgument;
+        }
+        
+        ViewManagerRetVal ViewManagerClass::UnregisterCamera(
+            unsigned int retCameraId)
+        {
+            if (int(~status & ViewManagerCreated))
+                return ViewManagerRetVal::InvalidOperation;
+            auto recordIter = std::begin(cameras);
+            while (recordIter != std::end(cameras))
+            {
+                if (recordIter->first == retCameraId)
+                {
+                    if (recordIter->second == activeCamera)
+                        return ViewManagerRetVal::CameraAlreadyInUse;
+                    cameras.erase(recordIter);
+                    return ViewManagerRetVal::Success;
+                }
+                recordIter++;
+            }
+            return ViewManagerRetVal::InvalidArgument;
+        }
+        
+        ViewManagerRetVal ViewManagerClass::UpdateProjection(
+            double aspect)
+        {
+            if (int(~status & ViewManagerCreated) || activeCamera == nullptr)
+                return ViewManagerRetVal::InvalidOperation;
+            if(toUpdate)
+            {
+                activeCamera->UpdateProjection(aspect);
+                toUpdate = false;
+            }
+            return ViewManagerRetVal::Success;
+        }
+        
+        ViewManagerRetVal ViewManagerClass::Destroy()
+        {
+            if (int(~status & ViewManagerCreated))
+                return ViewManagerRetVal::InvalidOperation;
+            status = VideoManagerStatus(0);
+            cameras.clear();
+            activeCamera = nullptr;
+            nextCameraId = 1;
+            toUpdate = false;
+            return ViewManagerRetVal::Success;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace MatWiecz
     {
         unsigned int BaseObjectClassClass::nextId = 1;
         
-        BaseObjectClassClass::BaseObjectClassClass(): flags(0)
+        BaseObjectClassClass::BaseObjectClassClass(): id(0), flags(0)
         {
         }
         
@@ -20,10 +20,10 @@ namespace MatWiecz
             float xAngle, float yAngle, float zAngle)
         {
             if (int(flags & ObjectCreated))
-                return InvalidOperation;
+                return BaseObjectClassRetVal::InvalidOperation;
             if (parentObject == nullptr || int(~parentObject->flags &
                                                ObjectCreated))
-                return InvalidArgument;
+                return BaseObjectClassRetVal::InvalidArgument;
             id = nextId++;
             parent = parentObject;
             parentChildNo = (unsigned int) parent->children.size();
@@ -40,7 +40,17 @@ namespace MatWiecz
             objectFunction = nullptr;
             flags |= ObjectCreated | ObjectVisible | ObjectShowPoints |
                 ObjectShowEdges | ObjectShowFaces;
-            return Success;
+            return BaseObjectClassRetVal::Success;
+        }
+        
+        bool BaseObjectClassClass::IsCreated()
+        {
+            return bool(int(flags & ObjectCreated));
+        }
+        
+        unsigned int BaseObjectClassClass::GetObjectId()
+        {
+            return id;
         }
         
         BaseObjectClassRetVal
@@ -49,35 +59,33 @@ namespace MatWiecz
                                           bool recursively)
         {
             if (int(~(flags & ObjectCreated)))
-                return InvalidOperation;
+                return BaseObjectClassRetVal::InvalidOperation;
             flagsMask &= ~ObjectCreated;
             switch (mode)
             {
-                case SetFlags:
+                case BaseObjectClassUpdateFlagsMode::SetFlags:
                     flags |= flagsMask;
                     break;
-                case UnsetFlags:
+                case BaseObjectClassUpdateFlagsMode::UnsetFlags:
                     flags &= ~flagsMask;
                     break;
-                case ToggleFlags:
+                case BaseObjectClassUpdateFlagsMode::ToggleFlags:
                     flags ^= flagsMask;
-                    break;
-                default:
                     break;
             }
             if (recursively)
                 for (auto &child : children)
                     child->UpdateFlags(mode, flagsMask, true);
-            return Success;
+            return BaseObjectClassRetVal::Success;
         }
         
         BaseObjectClassRetVal BaseObjectClassClass::SetObjectFunction(
             ObjectFunction newObjectFunction)
         {
             if (int(~(flags & ObjectCreated)))
-                return InvalidOperation;
+                return BaseObjectClassRetVal::InvalidOperation;
             objectFunction = newObjectFunction;
-            return Success;
+            return BaseObjectClassRetVal::Success;
         }
         
         BaseObjectClassRetVal BaseObjectClassClass::SetPos(
@@ -86,16 +94,16 @@ namespace MatWiecz
             pos[0] = xPos;
             pos[1] = yPos;
             pos[2] = zPos;
-            return Success;
+            return BaseObjectClassRetVal::Success;
         }
         
         BaseObjectClassRetVal BaseObjectClassClass::SetPosFunction(
             PosFunction newPosFunction)
         {
             if (int(~(flags & ObjectCreated)))
-                return InvalidOperation;
+                return BaseObjectClassRetVal::InvalidOperation;
             posFunction = newPosFunction;
-            return Success;
+            return BaseObjectClassRetVal::Success;
         }
         
         BaseObjectClassRetVal BaseObjectClassClass::SetAngle(
@@ -104,22 +112,22 @@ namespace MatWiecz
             angle[0] = xAngle;
             angle[2] = yAngle;
             angle[2] = zAngle;
-            return Success;
+            return BaseObjectClassRetVal::Success;
         }
         
         BaseObjectClassRetVal BaseObjectClassClass::SetAngleFunction(
             AngleFunction newAngleFunction)
         {
             if (int(~(flags & ObjectCreated)))
-                return InvalidOperation;
+                return BaseObjectClassRetVal::InvalidOperation;
             angleFunction = newAngleFunction;
-            return Success;
+            return BaseObjectClassRetVal::Success;
         }
         
         BaseObjectClassRetVal BaseObjectClassClass::Execute()
         {
             if (int(~(flags & ObjectCreated)))
-                return InvalidOperation;
+                return BaseObjectClassRetVal::InvalidOperation;
             if(posFunction != nullptr)
                 posFunction(pos);
             if(angleFunction != nullptr)
@@ -138,18 +146,19 @@ namespace MatWiecz
             for (auto &child : children)
                 child->Execute();
             glPopMatrix();
-            return Success;
+            return BaseObjectClassRetVal::Success;
         }
         
         BaseObjectClassRetVal BaseObjectClassClass::Destroy()
         {
             if (int(~(flags & ObjectCreated)))
-                return InvalidOperation;
+                return BaseObjectClassRetVal::InvalidOperation;
             for (auto &child : children)
                 child->Destroy();
-            flags &= ~ObjectCreated;
+            flags = BaseObjectClassFlags(0);
             parent->children.erase(parent->children.begin() + parentChildNo);
-            return Success;
+            id = 0;
+            return BaseObjectClassRetVal::Success;
         }
     }
 }

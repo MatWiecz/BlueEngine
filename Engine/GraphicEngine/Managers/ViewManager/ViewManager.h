@@ -5,6 +5,23 @@
 #ifndef BLUEENGINE_VIEWMANAGER_H
 #define BLUEENGINE_VIEWMANAGER_H
 
+namespace MatWiecz
+{
+    namespace BlueEngine
+    {
+        typedef enum class ViewManagerRetValEnum
+        {
+            Success,
+            InvalidArgument,
+            InvalidOperation,
+            CameraAlreadyRegistered,
+            CameraAlreadyInUse
+        } ViewManagerRetVal;
+        
+        typedef class ViewManagerClass ViewManager;
+    }
+}
+
 #include "../../../../Common/Basics/BitField.hpp"
 #include "../../ObjectClasses/Camera/Camera.h"
 
@@ -17,32 +34,35 @@ namespace MatWiecz
         const VideoManagerStatus ViewManagerCreated;
         const VideoManagerStatus VideoManagerInUse;
         
-        typedef enum ViewManagerRetValEnum
-        {
-            Success,
-            InvalidArgument
-        
-        } ViewManagerRetVal;
-        
-        typedef class ViewManagerClass
+        class ViewManagerClass
         {
             private:
             VideoManagerStatus status;
-            std::vector <std::pair<unsigned int, Camera *>> cameras;
-            unsigned int activeCamera;
+            std::vector <std::pair <unsigned int, Camera *>> cameras;
+            Camera *activeCamera;
             unsigned int nextCameraId;
+            bool toUpdate;
+            //TODO: What if the Camera's object will be destroyed suddenly?
             
             public:
             ViewManagerClass();
-            ~ViewManagerClass() = default;
-            ViewManagerRetVal Create();
-            ViewManagerRetVal Destroy();
-            ViewManagerRetVal AddCamera ();
-            ViewManagerRetVal ActivateCamera();
-            ViewManagerRetVal DeleteCamera ();
-            ViewManagerRetVal UpdateProjection();
             
-        } ViewManager;
+            ~ViewManagerClass() = default;
+            
+            ViewManagerRetVal Create();
+            
+            ViewManagerRetVal RegisterCamera(Camera *camera,
+                                             unsigned int *retCameraId);
+            
+            ViewManagerRetVal ActivateCamera(unsigned int retCameraId);
+            
+            ViewManagerRetVal UnregisterCamera(unsigned int retCameraId);
+            
+            ViewManagerRetVal UpdateProjection(double aspect);
+            
+            ViewManagerRetVal Destroy();
+            
+        };
     };
 }
 

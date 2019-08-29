@@ -5,6 +5,32 @@
 #ifndef BLUEENGINE_VIDEOOUTPUTWINDOW_H
 #define BLUEENGINE_VIDEOOUTPUTWINDOW_H
 
+namespace MatWiecz
+{
+    namespace BlueEngine
+    {
+        typedef enum class VideoOutputWindowRetValEnum
+        {
+            Success,
+            InvalidArgument,
+            InvalidOperation,
+            InvalidPixelFormat,
+            OpenGLInitiationFailed,
+            OpenGLContextSwitchFailed,
+            OpenGLDestructionFailed
+        } VideoOutputWindowRetVal;
+    
+        typedef enum class VideoOutputWindowResolutionEnum
+        {
+            Res16x9,
+            Res4x3,
+            Res16x10
+        } VideoOutputWindowResolution;
+        
+        typedef class VideoOutputWindowClass VideoOutputWindow;
+    }
+}
+
 #include <windows.h>
 #include <GL/gl.h>
 #include "../Common/Basics/BitField.hpp"
@@ -18,25 +44,8 @@ namespace MatWiecz
             VideoOutputWindowStatus;
         const VideoOutputWindowStatus VideoOutputWindowCreated;
         
-        typedef enum VideoOutputWindowRetValEnum
-        {
-            Success,
-            InvalidArgument,
-            InvalidOperation,
-            InvalidPixelFormat,
-            OpenGLInitiationFailed,
-            OpenGLContextSwitchFailed,
-            OpenGLDestructionFailed
-        } VideoOutputWindowRetVal;
         
-        typedef enum VideoOutputWindowResolutionEnum
-        {
-            Res16x9,
-            Res4x3,
-            Res16x10
-        } VideoOutputWindowResolution;
-        
-        typedef class VideoOutputWindowClass
+        class VideoOutputWindowClass
         {
             private:
             VideoOutputWindowStatus status;
@@ -54,7 +63,7 @@ namespace MatWiecz
             
             ~VideoOutputWindowClass();
             
-            VideoOutputWindowRetVal SetUpWindowResolution (
+            VideoOutputWindowRetVal SetUpWindowResolution(
                 VideoOutputWindowResolution newResolution);
             
             VideoOutputWindowRetVal
@@ -70,11 +79,11 @@ namespace MatWiecz
             
             VideoOutputWindowRetVal Create(HDC handleToDeviceContext);
             
-            VideoOutputWindowRetVal ResizeWindow (int newWidth, int newHeight);
+            VideoOutputWindowRetVal ResizeWindow(int newWidth, int newHeight);
             
             VideoOutputWindowRetVal Destroy();
             
-        } VideoOutputWindow;
+        };
     }
 }
 

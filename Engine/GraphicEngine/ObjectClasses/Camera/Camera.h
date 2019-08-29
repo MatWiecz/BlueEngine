@@ -5,19 +5,28 @@
 #ifndef BLUEENGINE_CAMERA_H
 #define BLUEENGINE_CAMERA_H
 
+namespace MatWiecz
+{
+    namespace BlueEngine
+    {
+        typedef enum class CameraModeEnum
+        {
+            Perspective,
+            Orthographic
+        } CameraMode;
+        
+        typedef class CameraClass Camera;
+    }
+}
+
 #include "../BaseObjectClass.h"
+#include "../../Managers/ViewManager/ViewManager.h"
 
 namespace MatWiecz
 {
     namespace BlueEngine
     {
-        typedef enum CameraModeEnum
-        {
-            Perspective,
-            Ortographic
-        } CameraMode;
-        
-        typedef class CameraClass : public BaseObjectClass
+        class CameraClass : public BaseObjectClass
         {
             protected:
             CameraMode mode;
@@ -34,8 +43,10 @@ namespace MatWiecz
     
             BaseObjectClassRetVal SetUpOrtographicCamera(
                 double width, double zNear, double zFar);
+    
+            BaseObjectClassRetVal UpdateProjection(double aspect);
             
-        } Camera;
+        };
     };
 }
 

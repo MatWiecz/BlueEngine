@@ -36,105 +36,105 @@ namespace MatWiecz
             VideoOutputWindowResolution newResolution)
         {
             if (int(status & VideoOutputWindowCreated))
-                return InvalidOperation;
+                return VideoOutputWindowRetVal::InvalidOperation;
             resolution = newResolution;
-            return Success;
+            return VideoOutputWindowRetVal::Success;
         }
         
         VideoOutputWindowRetVal VideoOutputWindowClass::SetUpColorBuffer(
             unsigned char bitsPerPixel)
         {
             if (int(status & VideoOutputWindowCreated))
-                return InvalidOperation;
+                return VideoOutputWindowRetVal::InvalidOperation;
             if (bitsPerPixel != 8 &&
                 bitsPerPixel != 16 &&
                 bitsPerPixel != 24 &&
                 bitsPerPixel != 32)
-                return InvalidArgument;
+                return VideoOutputWindowRetVal::InvalidArgument;
             pfd.cColorBits = bitsPerPixel;
             if (pfd.cAccumBits != 0)
                 pfd.cAccumBits = bitsPerPixel;
-            return Success;
+            return VideoOutputWindowRetVal::Success;
         }
         
         VideoOutputWindowRetVal VideoOutputWindowClass::SetUpAccumulationBuffer(
             bool use)
         {
             if (int(status & VideoOutputWindowCreated))
-                return InvalidOperation;
+                return VideoOutputWindowRetVal::InvalidOperation;
             if (use)
                 pfd.cAccumBits =
                     pfd.cColorBits;
             else
                 pfd.cAccumBits = 0;
-            return Success;
+            return VideoOutputWindowRetVal::Success;
         }
         
         VideoOutputWindowRetVal VideoOutputWindowClass::SetUpZBuffer(
             unsigned char bitsPerPixel)
         {
             if (int(status & VideoOutputWindowCreated))
-                return InvalidOperation;
+                return VideoOutputWindowRetVal::InvalidOperation;
             if (bitsPerPixel != 0 &&
                 bitsPerPixel != 8 &&
                 bitsPerPixel != 16 &&
                 bitsPerPixel != 32)
-                return InvalidArgument;
+                return VideoOutputWindowRetVal::InvalidArgument;
             pfd.cDepthBits = bitsPerPixel;
-            return Success;
+            return VideoOutputWindowRetVal::Success;
         }
         
         VideoOutputWindowRetVal VideoOutputWindowClass::SetUpStencilBuffer(
             unsigned char bitsPerPixel)
         {
             if (int(status & VideoOutputWindowCreated))
-                return InvalidOperation;
+                return VideoOutputWindowRetVal::InvalidOperation;
             if (bitsPerPixel != 0 &&
                 bitsPerPixel != 8 &&
                 bitsPerPixel != 16 &&
                 bitsPerPixel != 32)
-                return InvalidArgument;
+                return VideoOutputWindowRetVal::InvalidArgument;
             pfd.cStencilBits = bitsPerPixel;
-            return Success;
+            return VideoOutputWindowRetVal::Success;
         }
         
         VideoOutputWindowRetVal VideoOutputWindowClass::Create(
             HDC handleToDeviceContext)
         {
             if (int(status & VideoOutputWindowCreated))
-                return InvalidOperation;
+                return VideoOutputWindowRetVal::InvalidOperation;
             if (handleToDeviceContext == NULL)
-                return InvalidArgument;
+                return VideoOutputWindowRetVal::InvalidArgument;
             hDC = handleToDeviceContext;
             foundPixelFormat = ChoosePixelFormat(hDC, &pfd);
             if (!SetPixelFormat(hDC, foundPixelFormat, &pfd))
-                return InvalidPixelFormat;
+                return VideoOutputWindowRetVal::InvalidPixelFormat;
             if ((hRC = wglCreateContext(hDC)) == NULL)
-                OpenGLInitiationFailed;
+                VideoOutputWindowRetVal::OpenGLInitiationFailed;
             if (!wglMakeCurrent(hDC, hRC))
-                return OpenGLContextSwitchFailed;
-            status &= VideoOutputWindowCreated;
-            return Success;
+                return VideoOutputWindowRetVal::OpenGLContextSwitchFailed;
+            status |= VideoOutputWindowCreated;
+            return VideoOutputWindowRetVal::Success;
         }
         
         VideoOutputWindowRetVal VideoOutputWindowClass::ResizeWindow(
             int newWidth, int newHeight)
         {
             if (int(~status & VideoOutputWindowCreated))
-                return InvalidOperation;
+                return VideoOutputWindowRetVal::InvalidOperation;
             if (newWidth == 0 || newHeight == 0)
-                return InvalidArgument;
+                return VideoOutputWindowRetVal::InvalidArgument;
             width = newWidth;
             height = newHeight;
             int xUnits = 16;
             int yUnits = 9;
             switch (resolution)
             {
-                case Res4x3:
+                case VideoOutputWindowResolution::Res4x3:
                     xUnits = 4;
                     yUnits = 3;
                     break;
-                case Res16x10:
+                case VideoOutputWindowResolution::Res16x10:
                     xUnits = 16;
                     yUnits = 10;
                     break;
@@ -149,24 +149,20 @@ namespace MatWiecz
                 int tempWidth = height * xUnits / yUnits;
                 glViewport((width - tempWidth)/2, 0, tempWidth, height);
             }
-            glMatrixMode(GL_PROJECTION);
-            glLoadIdentity();
             
-            glMatrixMode(GL_MODELVIEW);
-            glLoadIdentity();
-            return Success;
+            return VideoOutputWindowRetVal::Success;
         }
         
         VideoOutputWindowRetVal VideoOutputWindowClass::Destroy()
         {
             if (int(~status & VideoOutputWindowCreated))
-                return InvalidOperation;
-            status &= ~VideoOutputWindowCreated;
+                return VideoOutputWindowRetVal::InvalidOperation;
+            status = VideoOutputWindowStatus(0);
             if (!wglMakeCurrent(hDC, NULL))
-                return OpenGLContextSwitchFailed;
+                return VideoOutputWindowRetVal::OpenGLContextSwitchFailed;
             if (!wglDeleteContext(hRC))
-                return OpenGLDestructionFailed;
-            return Success;
+                return VideoOutputWindowRetVal::OpenGLDestructionFailed;
+            return VideoOutputWindowRetVal::Success;
         }
     }
 }

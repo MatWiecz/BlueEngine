@@ -5,6 +5,28 @@
 #ifndef BLUEENGINE_BASEOBJECTCLASS_H
 #define BLUEENGINE_BASEOBJECTCLASS_H
 
+namespace MatWiecz
+{
+    namespace BlueEngine
+    {
+        typedef enum class BasObjectClassRetValEnum
+        {
+            Success,
+            InvalidArgument,
+            InvalidOperation
+        } BaseObjectClassRetVal;
+        
+        typedef enum class BaseObjectClassUpdateFlagsModeEnum
+        {
+            SetFlags,
+            UnsetFlags,
+            ToggleFlags
+        } BaseObjectClassUpdateFlagsMode;
+        
+        typedef class BaseObjectClassClass BaseObjectClass;
+    }
+}
+
 #include <stdlib.h>
 #include <string>
 #include <vector>
@@ -16,17 +38,7 @@ namespace MatWiecz
 {
     namespace BlueEngine
     {
-        typedef enum BasObjectClassRetValEnum
-        {
-            Success,
-            InvalidArgument,
-            InvalidOperation
-        } BaseObjectClassRetVal;
-        
-        struct BaseObjectClassFlagsStruct
-        {
-        };
-        
+        struct BaseObjectClassFlagsStruct {};
         typedef BitField <BaseObjectClassFlagsStruct> BaseObjectClassFlags;
         const BaseObjectClassFlags ObjectCreated;
         const BaseObjectClassFlags ObjectVisible;
@@ -34,21 +46,14 @@ namespace MatWiecz
         const BaseObjectClassFlags ObjectShowEdges;
         const BaseObjectClassFlags ObjectShowFaces;
         const BaseObjectClassFlags ObjectTextured;
-        
+    
         typedef void (*PosFunction)(float [3]);
-        
+    
         typedef void (*AngleFunction)(float [3]);
-        
+    
         typedef void (*ObjectFunction)(BaseObjectClassFlags);
         
-        typedef enum BaseObjectClassUpdateFlagsModeEnum
-        {
-            SetFlags,
-            UnsetFlags,
-            ToggleFlags
-        } BaseObjectClassUpdateFlagsMode;
-        
-        typedef class BaseObjectClassClass
+        class BaseObjectClassClass
         {
             protected:
             static unsigned int nextId;
@@ -74,6 +79,10 @@ namespace MatWiecz
                                          float xPos, float yPos, float zPos,
                                          float xAngle, float yAngle,
                                          float zAngle);
+    
+            bool IsCreated ();
+            
+            unsigned int GetObjectId ();
             
             BaseObjectClassRetVal UpdateFlags(BaseObjectClassUpdateFlagsMode mode, BaseObjectClassFlags flagsMask,
                                                           bool recursively);
@@ -94,8 +103,7 @@ namespace MatWiecz
             BaseObjectClassRetVal Execute();
             
             BaseObjectClassRetVal Destroy();
-            
-        } BaseObjectClass;
+        };
     }
 }
 

@@ -5,35 +5,38 @@
 #ifndef BLUEENGINE_ENGINE_H
 #define BLUEENGINE_ENGINE_H
 
+namespace MatWiecz
+{
+    namespace BlueEngine
+    {
+        typedef enum class EngineRetValEnum
+        {
+            Success,
+            InvalidArgument
+        } EngineRetVal;
+        
+        typedef class EngineClass Engine;
+    }
+}
+
 #include "../Common/Basics/BitField.hpp"
 
 namespace MatWiecz
 {
     namespace BlueEngine
     {
-        struct EngineStatusStruct
-        {
-        };
+        struct EngineStatusStruct {};
         typedef BitField <EngineStatusStruct> EngineStatus;
         const EngineStatus EngineCreated;
         const EngineStatus EngineInitiated;
         
-        typedef enum EngineRetValEnum
-        {
-            Success,
-            InvalidArgument
-            
-        } EngineRetVal;
-        
-        struct EngineOperationModeStruct
-        {
-        };
+        struct EngineOperationModeStruct {};
         typedef BitField <EngineOperationModeStruct> EngineOperationMode;
         const EngineOperationMode EngineUserMode;
         const EngineOperationMode EngineDeveloperMode;
         const EngineOperationMode EngineDebugMode;
         
-        typedef class EngineClass
+        class EngineClass
         {
             private:
             
@@ -51,7 +54,7 @@ namespace MatWiecz
             EngineRetVal Start();
             
             EngineRetVal Stop();
-        } Engine;
+        };
         
     }
 }

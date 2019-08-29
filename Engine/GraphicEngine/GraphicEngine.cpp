@@ -3,3 +3,10 @@
 //
 
 #include "GraphicEngine.h"
+
+namespace MatWiecz
+{
+    namespace BlueEngine
+    {
+    }
+}
