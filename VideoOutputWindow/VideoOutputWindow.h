@@ -20,12 +20,12 @@ namespace MatWiecz
             OpenGLDestructionFailed
         } VideoOutputWindowRetVal;
     
-        typedef enum class VideoOutputWindowResolutionEnum
+        typedef enum class VideoOutputWindowAspectRatioEnum
         {
-            Res16x9,
-            Res4x3,
-            Res16x10
-        } VideoOutputWindowResolution;
+            Ratio16x9,
+            Ratio4x3,
+            Ratio16x10
+        } VideoOutputWindowAspectRatio;
         
         typedef class VideoOutputWindowClass VideoOutputWindow;
     }
@@ -53,7 +53,7 @@ namespace MatWiecz
             HDC hDC;
             HGLRC hRC;
             int foundPixelFormat;
-            VideoOutputWindowResolution resolution;
+            VideoOutputWindowAspectRatio aspectRatio;
             int width;
             int height;
             
@@ -64,7 +64,7 @@ namespace MatWiecz
             ~VideoOutputWindowClass();
             
             VideoOutputWindowRetVal SetUpWindowResolution(
-                VideoOutputWindowResolution newResolution);
+                VideoOutputWindowAspectRatio newResolution);
             
             VideoOutputWindowRetVal
             SetUpColorBuffer(unsigned char bitsPerPixel);

@@ -59,7 +59,7 @@ namespace MatWiecz
             static unsigned int nextId;
             unsigned int id;
             BaseObjectClassFlags flags;
-            BaseObjectClassClass *parent;
+            BaseObjectClass *parent;
             unsigned int parentChildNo;
             std::string name;
             float pos[3];
@@ -67,15 +67,15 @@ namespace MatWiecz
             ObjectFunction objectFunction;
             PosFunction posFunction;
             AngleFunction angleFunction;
-            std::vector <BaseObjectClassClass *> children;
+            std::vector <BaseObjectClass *> children;
             
             public:
             BaseObjectClassClass();
             
-            ~BaseObjectClassClass() = default;
+            ~BaseObjectClassClass();
     
-            BaseObjectClassRetVal Create(BaseObjectClassClass *parentObject,
-                                         std::string &objectName,
+            BaseObjectClassRetVal Create(BaseObjectClass *parentObject,
+                                         std::string objectName,
                                          float xPos, float yPos, float zPos,
                                          float xAngle, float yAngle,
                                          float zAngle);

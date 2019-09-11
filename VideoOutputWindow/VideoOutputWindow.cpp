@@ -8,7 +8,7 @@ namespace MatWiecz
 {
     namespace BlueEngine
     {
-        VideoOutputWindowClass::VideoOutputWindowClass()
+        VideoOutputWindowClass::VideoOutputWindowClass(): status(0)
         {
             static PIXELFORMATDESCRIPTOR tempPixelFormatDescriptor {
                 sizeof(PIXELFORMATDESCRIPTOR),
@@ -33,11 +33,11 @@ namespace MatWiecz
         }
         
         VideoOutputWindowRetVal VideoOutputWindowClass::SetUpWindowResolution(
-            VideoOutputWindowResolution newResolution)
+            VideoOutputWindowAspectRatio newResolution)
         {
             if (int(status & VideoOutputWindowCreated))
                 return VideoOutputWindowRetVal::InvalidOperation;
-            resolution = newResolution;
+            aspectRatio = newResolution;
             return VideoOutputWindowRetVal::Success;
         }
         
@@ -128,13 +128,13 @@ namespace MatWiecz
             height = newHeight;
             int xUnits = 16;
             int yUnits = 9;
-            switch (resolution)
+            switch (aspectRatio)
             {
-                case VideoOutputWindowResolution::Res4x3:
+                case VideoOutputWindowAspectRatio::Ratio4x3:
                     xUnits = 4;
                     yUnits = 3;
                     break;
-                case VideoOutputWindowResolution::Res16x10:
+                case VideoOutputWindowAspectRatio::Ratio16x10:
                     xUnits = 16;
                     yUnits = 10;
                     break;

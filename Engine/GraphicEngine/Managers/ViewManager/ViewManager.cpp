@@ -14,11 +14,21 @@ namespace MatWiecz
                                               toUpdate(false)
         {
         }
+    
+        ViewManagerClass::~ViewManagerClass()
+        {
+            Destroy();
+        }
         
         ViewManagerRetVal ViewManagerClass::Create()
         {
             status |= ViewManagerCreated;
             return ViewManagerRetVal::Success;
+        }
+    
+        bool ViewManagerClass::IsCreated()
+        {
+            return bool(int(status & ViewManagerCreated));
         }
         
         ViewManagerRetVal ViewManagerClass::RegisterCamera(Camera *camera,
@@ -83,6 +93,14 @@ namespace MatWiecz
                 activeCamera->UpdateProjection(aspect);
                 toUpdate = false;
             }
+            return ViewManagerRetVal::Success;
+        }
+    
+        ViewManagerRetVal ViewManagerClass::PerformViewTransformation()
+        {
+            if (int(~status & ViewManagerCreated) || activeCamera == nullptr)
+                return ViewManagerRetVal::InvalidOperation;
+            activeCamera->PerformViewTransformation();
             return ViewManagerRetVal::Success;
         }
         

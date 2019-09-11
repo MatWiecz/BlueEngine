@@ -47,9 +47,11 @@ namespace MatWiecz
             public:
             ViewManagerClass();
             
-            ~ViewManagerClass() = default;
+            ~ViewManagerClass();
             
             ViewManagerRetVal Create();
+            
+            bool IsCreated ();
             
             ViewManagerRetVal RegisterCamera(Camera *camera,
                                              unsigned int *retCameraId);
@@ -59,6 +61,8 @@ namespace MatWiecz
             ViewManagerRetVal UnregisterCamera(unsigned int retCameraId);
             
             ViewManagerRetVal UpdateProjection(double aspect);
+    
+            ViewManagerRetVal PerformViewTransformation();
             
             ViewManagerRetVal Destroy();
             

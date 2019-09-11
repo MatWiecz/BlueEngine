@@ -13,16 +13,20 @@ namespace MatWiecz
         BaseObjectClassClass::BaseObjectClassClass(): id(0), flags(0)
         {
         }
+    
+        BaseObjectClassClass::~BaseObjectClassClass()
+        {
+            Destroy();
+        }
         
         BaseObjectClassRetVal BaseObjectClassClass::Create(
-            BaseObjectClassClass *parentObject, std::string &objectName,
+            BaseObjectClass *parentObject, std::string objectName,
             float xPos, float yPos, float zPos,
             float xAngle, float yAngle, float zAngle)
         {
             if (int(flags & ObjectCreated))
                 return BaseObjectClassRetVal::InvalidOperation;
-            if (parentObject == nullptr || int(~parentObject->flags &
-                                               ObjectCreated))
+            if (parentObject == nullptr || !parentObject->IsCreated())
                 return BaseObjectClassRetVal::InvalidArgument;
             id = nextId++;
             parent = parentObject;

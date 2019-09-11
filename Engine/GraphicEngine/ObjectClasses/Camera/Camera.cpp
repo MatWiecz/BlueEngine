@@ -19,7 +19,7 @@ namespace MatWiecz
         BaseObjectClassRetVal CameraClass::SetUpPerspectiveCamera(
             double shootingAngle, double zNear, double zFar)
         {
-            if (int(~(flags & ObjectCreated)))
+            if (!IsCreated())
                 return BaseObjectClassRetVal::InvalidOperation;
             if (shootingAngle >= 180.0 || shootingAngle <= 0.0 || zNear <= 0.0
                 || zNear >= zFar)
@@ -33,7 +33,7 @@ namespace MatWiecz
         BaseObjectClassRetVal CameraClass::SetUpOrtographicCamera(
             double width, double zNear, double zFar)
         {
-            if (int(~(flags & ObjectCreated)))
+            if (!IsCreated())
                 return BaseObjectClassRetVal::InvalidOperation;
             if (width <= 0.0 || zNear <= 0.0 || zNear >= zFar)
                 return BaseObjectClassRetVal::InvalidArgument;
@@ -46,7 +46,7 @@ namespace MatWiecz
         BaseObjectClassRetVal CameraClass::UpdateProjection(
             double aspect)
         {
-            if (int(~(flags & ObjectCreated)))
+            if (!IsCreated())
                 return BaseObjectClassRetVal::InvalidOperation;
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
@@ -65,6 +65,14 @@ namespace MatWiecz
             }
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
+            return BaseObjectClassRetVal::Success;
+        }
+    
+        BaseObjectClassRetVal CameraClass::PerformViewTransformation()
+        {
+            if (!IsCreated())
+                return BaseObjectClassRetVal::InvalidOperation;
+            
             return BaseObjectClassRetVal::Success;
         }
     }

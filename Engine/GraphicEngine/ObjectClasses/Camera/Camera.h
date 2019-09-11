@@ -45,6 +45,8 @@ namespace MatWiecz
                 double width, double zNear, double zFar);
     
             BaseObjectClassRetVal UpdateProjection(double aspect);
+    
+            BaseObjectClassRetVal PerformViewTransformation ();
             
         };
     };

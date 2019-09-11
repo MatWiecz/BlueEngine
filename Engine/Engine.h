@@ -39,7 +39,6 @@ namespace MatWiecz
         class EngineClass
         {
             private:
-            
             EngineStatus status;
             
             

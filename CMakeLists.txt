@@ -16,8 +16,8 @@ set(SOURCE_FILES BlueEngineHeader.h
 
         Common/Basics/BitField.hpp
 
-        Engine/GraphicEngine/GraphicEngine.cpp
-        Engine/GraphicEngine/GraphicEngine.h
+        Engine/GraphicEngine/GraphicsEngine.cpp
+        Engine/GraphicEngine/GraphicsEngine.h
 
         Engine/GraphicEngine/ObjectClasses/BaseObjectClass.cpp
         Engine/GraphicEngine/ObjectClasses/BaseObjectClass.h
@@ -26,7 +26,10 @@ set(SOURCE_FILES BlueEngineHeader.h
         Engine/GraphicEngine/ObjectClasses/Camera/Camera.h
 
         Engine/GraphicEngine/Managers/ViewManager/ViewManager.cpp
-        Engine/GraphicEngine/Managers/ViewManager/ViewManager.h)
+        Engine/GraphicEngine/Managers/ViewManager/ViewManager.h
+
+        Engine/GraphicEngine/ObjectClasses/CoordinateSystem/CoordinateSystem.cpp
+        Engine/GraphicEngine/ObjectClasses/CoordinateSystem/CoordinateSystem.h)
 
 add_compile_options("-static-libstdc++")
 add_compile_options("-static-libgcc")
