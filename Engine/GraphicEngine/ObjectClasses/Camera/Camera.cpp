@@ -15,6 +15,19 @@ namespace MatWiecz
                                     zFarParam(1000.0)
         {
         }
+    
+        BaseObjectClassRetVal CameraClass::CreateCamera(
+            BaseObjectClass *parentObject, std::string objectName, float xPos,
+            float yPos, float zPos, float xAngle, float yAngle, float zAngle)
+        {
+            BaseObjectClassRetVal retVal = Create(parentObject, objectName,
+                                                  xPos, yPos, zPos,
+                                                  xAngle, yAngle, zAngle);
+            if(retVal == BaseObjectClassRetVal::Success)
+                objectFunction = Camera::DrawFunction;
+            return retVal;
+        
+        }
         
         BaseObjectClassRetVal CameraClass::SetUpPerspectiveCamera(
             double shootingAngle, double zNear, double zFar)
@@ -67,13 +80,36 @@ namespace MatWiecz
             glLoadIdentity();
             return BaseObjectClassRetVal::Success;
         }
-    
+        
         BaseObjectClassRetVal CameraClass::PerformViewTransformation()
         {
             if (!IsCreated())
                 return BaseObjectClassRetVal::InvalidOperation;
-            
+            BaseObjectClass * currentObject = this;
+            while(currentObject != nullptr)
+            {
+                currentObject->PerformTranslationAndRotation(true);
+                currentObject = currentObject->GetParent();
+            }
             return BaseObjectClassRetVal::Success;
+        }
+        
+        void CameraClass::DrawFunction(BaseObjectClassFlags flags)
+        {
+            const float axisLength = 1000000.0f;
+            glBegin(GL_LINES);
+            {
+                glColor3f(1.0f, 0.0f, 0.0f);
+                glVertex3f(-axisLength, 0.0f, 0.0f);
+                glVertex3f(axisLength, 0.0f, 0.0f);
+                glColor3f(0.0f, 1.0f, 0.0f);
+                glVertex3f(0.0f, -axisLength, 0.0f);
+                glVertex3f(0.0f, axisLength, 0.0f);
+                glColor3f(0.0f, 0.0f, 1.0f);
+                glVertex3f(0.0f, 0.0f, -axisLength);
+                glVertex3f(0.0f, 0.0f, axisLength);
+            }
+            glEnd();
         }
     }
 }

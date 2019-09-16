@@ -12,7 +12,8 @@ namespace MatWiecz
         typedef enum class EngineRetValEnum
         {
             Success,
-            InvalidArgument
+            InvalidArgument,
+            InvalidOperation
         } EngineRetVal;
         
         typedef class EngineClass Engine;
@@ -20,6 +21,7 @@ namespace MatWiecz
 }
 
 #include "../Common/Basics/BitField.hpp"
+#include "GraphicEngine/GraphicsEngine.h"
 
 namespace MatWiecz
 {
@@ -27,12 +29,13 @@ namespace MatWiecz
     {
         struct EngineStatusStruct {};
         typedef BitField <EngineStatusStruct> EngineStatus;
-        const EngineStatus EngineCreated;
+        const EngineStatus EngineCreated(BitFieldSymbols::Reset);
         const EngineStatus EngineInitiated;
+        const EngineStatus EngineWorking;
         
         struct EngineOperationModeStruct {};
         typedef BitField <EngineOperationModeStruct> EngineOperationMode;
-        const EngineOperationMode EngineUserMode;
+        const EngineOperationMode EngineUserMode(BitFieldSymbols::Reset);
         const EngineOperationMode EngineDeveloperMode;
         const EngineOperationMode EngineDebugMode;
         
@@ -40,19 +43,29 @@ namespace MatWiecz
         {
             private:
             EngineStatus status;
+            EngineOperationMode engineOperationMode;
+            GraphicsEngine * graphicsEngine;
             
             
             public:
             EngineClass();
             
             ~EngineClass();
+    
+            EngineRetVal Create();
             
             EngineRetVal SetOperationMode(
                 const EngineOperationMode &mode);
+    
+            EngineRetVal SetGraphicsEngine (GraphicsEngine * newGraphicsEngine);
             
             EngineRetVal Start();
+    
+            EngineRetVal MessageProcessingLoop();
             
             EngineRetVal Stop();
+    
+            EngineRetVal Destroy();
         };
         
     }

@@ -10,10 +10,12 @@ namespace MatWiecz
     {
         unsigned int BaseObjectClassClass::nextId = 1;
         
-        BaseObjectClassClass::BaseObjectClassClass(): id(0), flags(0)
+        BaseObjectClassClass::BaseObjectClassClass(): id(0),
+                                                      flags(0),
+                                                      parent(nullptr)
         {
         }
-    
+        
         BaseObjectClassClass::~BaseObjectClassClass()
         {
             Destroy();
@@ -37,13 +39,13 @@ namespace MatWiecz
             pos[1] = yPos;
             pos[2] = zPos;
             angle[0] = xAngle;
-            angle[2] = yAngle;
+            angle[1] = yAngle;
             angle[2] = zAngle;
             posFunction = nullptr;
             angleFunction = nullptr;
             objectFunction = nullptr;
             flags |= ObjectCreated | ObjectVisible | ObjectShowPoints |
-                ObjectShowEdges | ObjectShowFaces;
+                     ObjectShowEdges | ObjectShowFaces;
             return BaseObjectClassRetVal::Success;
         }
         
@@ -57,12 +59,23 @@ namespace MatWiecz
             return id;
         }
         
+        BaseObjectClass *BaseObjectClassClass::GetParent()
+        {
+            return parent;
+        }
+        
+        const std::vector <BaseObjectClass *> &
+        BaseObjectClassClass::GetChildren()
+        {
+            return children;
+        }
+        
         BaseObjectClassRetVal
         BaseObjectClassClass::UpdateFlags(BaseObjectClassUpdateFlagsMode mode,
                                           BaseObjectClassFlags flagsMask,
                                           bool recursively)
         {
-            if (int(~(flags & ObjectCreated)))
+            if (int(~flags & ObjectCreated))
                 return BaseObjectClassRetVal::InvalidOperation;
             flagsMask &= ~ObjectCreated;
             switch (mode)
@@ -86,7 +99,7 @@ namespace MatWiecz
         BaseObjectClassRetVal BaseObjectClassClass::SetObjectFunction(
             ObjectFunction newObjectFunction)
         {
-            if (int(~(flags & ObjectCreated)))
+            if (int(~flags & ObjectCreated))
                 return BaseObjectClassRetVal::InvalidOperation;
             objectFunction = newObjectFunction;
             return BaseObjectClassRetVal::Success;
@@ -104,7 +117,7 @@ namespace MatWiecz
         BaseObjectClassRetVal BaseObjectClassClass::SetPosFunction(
             PosFunction newPosFunction)
         {
-            if (int(~(flags & ObjectCreated)))
+            if (int(~flags & ObjectCreated))
                 return BaseObjectClassRetVal::InvalidOperation;
             posFunction = newPosFunction;
             return BaseObjectClassRetVal::Success;
@@ -122,26 +135,46 @@ namespace MatWiecz
         BaseObjectClassRetVal BaseObjectClassClass::SetAngleFunction(
             AngleFunction newAngleFunction)
         {
-            if (int(~(flags & ObjectCreated)))
+            if (int(~flags & ObjectCreated))
                 return BaseObjectClassRetVal::InvalidOperation;
             angleFunction = newAngleFunction;
             return BaseObjectClassRetVal::Success;
         }
         
+        BaseObjectClassRetVal
+        BaseObjectClassClass::PerformTranslationAndRotation(
+            bool reverse)
+        {
+            if (int(~flags & ObjectCreated))
+                return BaseObjectClassRetVal::InvalidOperation;
+            if (posFunction != nullptr)
+                posFunction(pos);
+            if (angleFunction != nullptr)
+                angleFunction(angle);
+            if (!reverse)
+            {
+                glTranslatef(pos[0], pos[1], pos[2]);
+                glRotatef(angle[0], 1.0f, 0.0f, 0.0f);
+                glRotatef(angle[1], 0.0f, 1.0f, 0.0f);
+                glRotatef(angle[2], 0.0f, 0.0f, 1.0f);
+            }
+            else
+            {
+                glRotatef(-angle[2], 0.0f, 0.0f, 1.0f);
+                glRotatef(-angle[1], 0.0f, 1.0f, 0.0f);
+                glRotatef(-angle[0], 1.0f, 0.0f, 0.0f);
+                glTranslatef(-pos[0], -pos[1], -pos[2]);
+            }
+            return BaseObjectClassRetVal::Success;
+        }
+        
         BaseObjectClassRetVal BaseObjectClassClass::Execute()
         {
-            if (int(~(flags & ObjectCreated)))
+            if (int(~flags & ObjectCreated))
                 return BaseObjectClassRetVal::InvalidOperation;
-            if(posFunction != nullptr)
-                posFunction(pos);
-            if(angleFunction != nullptr)
-                angleFunction(angle);
             glPushMatrix();
-            glTranslatef(pos[0], pos[1], pos[2]);
-            glRotatef(angle[0], 1.0f, 0.0f, 0.0f);
-            glRotatef(angle[1], 0.0f, 1.0f, 0.0f);
-            glRotatef(angle[2], 0.0f, 0.0f, 1.0f);
-            if(objectFunction != nullptr && int(flags & ObjectVisible))
+            PerformTranslationAndRotation();
+            if (objectFunction != nullptr && int(flags & ObjectVisible))
             {
                 glPushMatrix();
                 objectFunction(flags);
@@ -155,12 +188,15 @@ namespace MatWiecz
         
         BaseObjectClassRetVal BaseObjectClassClass::Destroy()
         {
-            if (int(~(flags & ObjectCreated)))
+            if (int(~flags & ObjectCreated))
                 return BaseObjectClassRetVal::InvalidOperation;
             for (auto &child : children)
                 child->Destroy();
             flags = BaseObjectClassFlags(0);
-            parent->children.erase(parent->children.begin() + parentChildNo);
+            if (parent != nullptr)
+                parent->children.erase(parent->children.begin()
+                                       + parentChildNo);
+            parent = nullptr;
             id = 0;
             return BaseObjectClassRetVal::Success;
         }

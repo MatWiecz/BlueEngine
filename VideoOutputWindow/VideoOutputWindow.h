@@ -19,7 +19,7 @@ namespace MatWiecz
             OpenGLContextSwitchFailed,
             OpenGLDestructionFailed
         } VideoOutputWindowRetVal;
-    
+        
         typedef enum class VideoOutputWindowAspectRatioEnum
         {
             Ratio16x9,
@@ -42,7 +42,8 @@ namespace MatWiecz
         struct VideoOutputWindowStatusStruct {};
         typedef BitField <VideoOutputWindowStatusStruct>
             VideoOutputWindowStatus;
-        const VideoOutputWindowStatus VideoOutputWindowCreated;
+        const VideoOutputWindowStatus VideoOutputWindowCreated(
+            BitFieldSymbols::Reset);
         
         
         class VideoOutputWindowClass
@@ -63,8 +64,8 @@ namespace MatWiecz
             
             ~VideoOutputWindowClass();
             
-            VideoOutputWindowRetVal SetUpWindowResolution(
-                VideoOutputWindowAspectRatio newResolution);
+            VideoOutputWindowRetVal SetUpWindowAspectRatio(
+                VideoOutputWindowAspectRatio newAspectRatio);
             
             VideoOutputWindowRetVal
             SetUpColorBuffer(unsigned char bitsPerPixel);
@@ -78,8 +79,14 @@ namespace MatWiecz
             SetUpStencilBuffer(unsigned char bitsPerPixel);
             
             VideoOutputWindowRetVal Create(HDC handleToDeviceContext);
+    
+            bool IsCreated();
+            
+            double GetAspectRatio();
             
             VideoOutputWindowRetVal ResizeWindow(int newWidth, int newHeight);
+    
+            VideoOutputWindowRetVal UpdateFrame();
             
             VideoOutputWindowRetVal Destroy();
             

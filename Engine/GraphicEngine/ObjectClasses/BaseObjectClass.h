@@ -40,17 +40,17 @@ namespace MatWiecz
     {
         struct BaseObjectClassFlagsStruct {};
         typedef BitField <BaseObjectClassFlagsStruct> BaseObjectClassFlags;
-        const BaseObjectClassFlags ObjectCreated;
+        const BaseObjectClassFlags ObjectCreated(BitFieldSymbols::Reset);
         const BaseObjectClassFlags ObjectVisible;
         const BaseObjectClassFlags ObjectShowPoints;
         const BaseObjectClassFlags ObjectShowEdges;
         const BaseObjectClassFlags ObjectShowFaces;
         const BaseObjectClassFlags ObjectTextured;
-    
+        
         typedef void (*PosFunction)(float [3]);
-    
+        
         typedef void (*AngleFunction)(float [3]);
-    
+        
         typedef void (*ObjectFunction)(BaseObjectClassFlags);
         
         class BaseObjectClassClass
@@ -73,32 +73,42 @@ namespace MatWiecz
             BaseObjectClassClass();
             
             ~BaseObjectClassClass();
-    
-            BaseObjectClassRetVal Create(BaseObjectClass *parentObject,
-                                         std::string objectName,
-                                         float xPos, float yPos, float zPos,
-                                         float xAngle, float yAngle,
-                                         float zAngle);
-    
-            bool IsCreated ();
             
-            unsigned int GetObjectId ();
+            virtual BaseObjectClassRetVal Create(BaseObjectClass *parentObject,
+                                                 std::string objectName,
+                                                 float xPos, float yPos,
+                                                 float zPos,
+                                                 float xAngle, float yAngle,
+                                                 float zAngle);
             
-            BaseObjectClassRetVal UpdateFlags(BaseObjectClassUpdateFlagsMode mode, BaseObjectClassFlags flagsMask,
-                                                          bool recursively);
+            bool IsCreated();
+            
+            unsigned int GetObjectId();
+            
+            BaseObjectClass *GetParent();
+            
+            const std::vector <BaseObjectClass *> &GetChildren();
+            
+            BaseObjectClassRetVal
+            UpdateFlags(BaseObjectClassUpdateFlagsMode mode,
+                        BaseObjectClassFlags flagsMask,
+                        bool recursively);
             
             BaseObjectClassRetVal SetObjectFunction(ObjectFunction
                                                     newObjectFunction);
-    
-            BaseObjectClassRetVal SetPos (float xPos, float yPos, float zPos);
+            
+            BaseObjectClassRetVal SetPos(float xPos, float yPos, float zPos);
             
             BaseObjectClassRetVal SetPosFunction(PosFunction newPosFunction);
-    
-            BaseObjectClassRetVal SetAngle (float xAngle, float yAngle,
-                                          float zAngle);
+            
+            BaseObjectClassRetVal SetAngle(float xAngle, float yAngle,
+                                           float zAngle);
             
             BaseObjectClassRetVal SetAngleFunction(AngleFunction
                                                    newAngleFunction);
+            
+            BaseObjectClassRetVal PerformTranslationAndRotation(
+                bool reverse = false);
             
             BaseObjectClassRetVal Execute();
             

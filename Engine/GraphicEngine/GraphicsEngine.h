@@ -23,6 +23,7 @@ namespace MatWiecz
 #include "../../Common/Basics/BitField.hpp"
 #include "Managers/ViewManager/ViewManager.h"
 #include "ObjectClasses/CoordinateSystem/CoordinateSystem.h"
+#include "../../VideoOutputWindow/VideoOutputWindow.h"
 
 namespace MatWiecz
 {
@@ -30,15 +31,19 @@ namespace MatWiecz
     {
         struct GraphicsEngineStatusStruct {};
         typedef BitField <GraphicsEngineStatusStruct> GraphicsEngineStatus;
-        const GraphicsEngineStatus GraphicsEngineCreated;
+        const GraphicsEngineStatus GraphicsEngineCreated(
+            BitFieldSymbols::Reset);
         const GraphicsEngineStatus GraphicsEngineInitiated;
+        const GraphicsEngineStatus GraphicsEngineWorking;
         
         class GraphicsEngineClass
         {
             private:
             GraphicsEngineStatus status;
+            VideoOutputWindow * videoOutputWindow;
             ViewManager *viewManager;
             CoordinateSystem *origin;
+            GLclampf defaultColorValues [4];
             
             
             public:
@@ -48,11 +53,25 @@ namespace MatWiecz
             
             GraphicsEngineRetVal Create();
             
-            GraphicsEngineRetVal SetViewManager(ViewManager *newViewManager);
+            bool IsCreated();
+    
+            GraphicsEngineRetVal SetVideoOutputWindow(
+                VideoOutputWindow *newVideoOutputWindow);
             
-            CoordinateSystem * GetOrigin();
+            GraphicsEngineRetVal SetViewManager(ViewManager *newViewManager);
+    
+            GraphicsEngineRetVal SetDefaultColorValues(GLclampf red,
+                                                       GLclampf green,
+                                                       GLclampf blue,
+                                                       GLclampf alpha);
+    
+            GraphicsEngineRetVal Start();
+            
+            CoordinateSystem *GetOrigin();
             
             GraphicsEngineRetVal DrawScene();
+    
+            GraphicsEngineRetVal Stop();
             
             GraphicsEngineRetVal Destroy();
         };

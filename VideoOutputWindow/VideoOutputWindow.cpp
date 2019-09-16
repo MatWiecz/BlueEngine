@@ -8,7 +8,8 @@ namespace MatWiecz
 {
     namespace BlueEngine
     {
-        VideoOutputWindowClass::VideoOutputWindowClass(): status(0)
+        VideoOutputWindowClass::VideoOutputWindowClass(): status(0),
+                                                          width(-1), height(-1)
         {
             static PIXELFORMATDESCRIPTOR tempPixelFormatDescriptor {
                 sizeof(PIXELFORMATDESCRIPTOR),
@@ -25,6 +26,7 @@ namespace MatWiecz
                 0, 0, 0, 0};
             pfd = tempPixelFormatDescriptor;
             foundPixelFormat = 0;
+            aspectRatio = VideoOutputWindowAspectRatioEnum::Ratio16x9;
         }
         
         VideoOutputWindowClass::~VideoOutputWindowClass()
@@ -32,12 +34,12 @@ namespace MatWiecz
             Destroy();
         }
         
-        VideoOutputWindowRetVal VideoOutputWindowClass::SetUpWindowResolution(
-            VideoOutputWindowAspectRatio newResolution)
+        VideoOutputWindowRetVal VideoOutputWindowClass::SetUpWindowAspectRatio(
+            VideoOutputWindowAspectRatio newAspectRatio)
         {
             if (int(status & VideoOutputWindowCreated))
                 return VideoOutputWindowRetVal::InvalidOperation;
-            aspectRatio = newResolution;
+            aspectRatio = newAspectRatio;
             return VideoOutputWindowRetVal::Success;
         }
         
@@ -117,15 +119,13 @@ namespace MatWiecz
             return VideoOutputWindowRetVal::Success;
         }
         
-        VideoOutputWindowRetVal VideoOutputWindowClass::ResizeWindow(
-            int newWidth, int newHeight)
+        bool VideoOutputWindowClass::IsCreated()
         {
-            if (int(~status & VideoOutputWindowCreated))
-                return VideoOutputWindowRetVal::InvalidOperation;
-            if (newWidth == 0 || newHeight == 0)
-                return VideoOutputWindowRetVal::InvalidArgument;
-            width = newWidth;
-            height = newHeight;
+            return bool(int(status & VideoOutputWindowCreated));
+        }
+    
+        double VideoOutputWindowClass::GetAspectRatio()
+        {
             int xUnits = 16;
             int yUnits = 9;
             switch (aspectRatio)
@@ -141,15 +141,36 @@ namespace MatWiecz
                 default:
                     break;
             }
-            int tempHeight = width * yUnits / xUnits;
+            return double(xUnits)/yUnits;
+        }
+        
+        VideoOutputWindowRetVal VideoOutputWindowClass::ResizeWindow(
+            int newWidth, int newHeight)
+        {
+            if (int(~status & VideoOutputWindowCreated))
+                return VideoOutputWindowRetVal::InvalidOperation;
+            if (newWidth == 0 || newHeight == 0)
+                return VideoOutputWindowRetVal::InvalidArgument;
+            width = newWidth;
+            height = newHeight;
+            int tempHeight = width / GetAspectRatio();
             if (tempHeight <= height)
-                glViewport(0, (height - tempHeight)/2, width, tempHeight);
+                glViewport(0, (height - tempHeight) / 2, width, tempHeight);
             else
             {
-                int tempWidth = height * xUnits / yUnits;
-                glViewport((width - tempWidth)/2, 0, tempWidth, height);
+                int tempWidth = height * GetAspectRatio();
+                glViewport((width - tempWidth) / 2, 0, tempWidth, height);
             }
             
+            return VideoOutputWindowRetVal::Success;
+        }
+        
+        VideoOutputWindowRetVal VideoOutputWindowClass::UpdateFrame()
+        {
+            if (int(~status & VideoOutputWindowCreated))
+                return VideoOutputWindowRetVal::InvalidOperation;
+            glFlush();
+            SwapBuffers(hDC);
             return VideoOutputWindowRetVal::Success;
         }
         

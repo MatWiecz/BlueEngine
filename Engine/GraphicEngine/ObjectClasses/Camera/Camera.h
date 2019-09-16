@@ -26,7 +26,7 @@ namespace MatWiecz
 {
     namespace BlueEngine
     {
-        class CameraClass : public BaseObjectClass
+        class CameraClass: public BaseObjectClass
         {
             protected:
             CameraMode mode;
@@ -38,15 +38,23 @@ namespace MatWiecz
             public:
             CameraClass();
     
+            BaseObjectClassRetVal CreateCamera(
+                BaseObjectClass *parentObject, std::string objectName,
+                float xPos, float yPos, float zPos,
+                float xAngle, float yAngle, float zAngle);
+            
             BaseObjectClassRetVal SetUpPerspectiveCamera(
                 double shootingAngle, double zNear, double zFar);
-    
+            
             BaseObjectClassRetVal SetUpOrtographicCamera(
                 double width, double zNear, double zFar);
-    
+            
             BaseObjectClassRetVal UpdateProjection(double aspect);
-    
-            BaseObjectClassRetVal PerformViewTransformation ();
+            
+            BaseObjectClassRetVal PerformViewTransformation();
+            
+            static void DrawFunction(BaseObjectClassFlags
+                                     flags);
             
         };
     };

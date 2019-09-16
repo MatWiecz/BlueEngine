@@ -14,7 +14,7 @@ namespace MatWiecz
                                               toUpdate(false)
         {
         }
-    
+        
         ViewManagerClass::~ViewManagerClass()
         {
             Destroy();
@@ -25,7 +25,7 @@ namespace MatWiecz
             status |= ViewManagerCreated;
             return ViewManagerRetVal::Success;
         }
-    
+        
         bool ViewManagerClass::IsCreated()
         {
             return bool(int(status & ViewManagerCreated));
@@ -37,7 +37,7 @@ namespace MatWiecz
             if (int(~status & ViewManagerCreated))
                 return ViewManagerRetVal::InvalidOperation;
             if (camera == nullptr || retCameraId == nullptr
-                || camera->IsCreated())
+                || !camera->IsCreated())
                 return ViewManagerRetVal::InvalidArgument;
             for (auto &record : cameras)
                 if (record.second->GetObjectId() == camera->GetObjectId())
@@ -57,9 +57,9 @@ namespace MatWiecz
                 if (record.first == retCameraId)
                 {
                     activeCamera = record.second;
+                    toUpdate = true;
                     return ViewManagerRetVal::Success;
                 }
-            toUpdate = true;
             return ViewManagerRetVal::InvalidArgument;
         }
         
@@ -88,14 +88,14 @@ namespace MatWiecz
         {
             if (int(~status & ViewManagerCreated) || activeCamera == nullptr)
                 return ViewManagerRetVal::InvalidOperation;
-            if(toUpdate)
+            if (toUpdate)
             {
                 activeCamera->UpdateProjection(aspect);
                 toUpdate = false;
             }
             return ViewManagerRetVal::Success;
         }
-    
+        
         ViewManagerRetVal ViewManagerClass::PerformViewTransformation()
         {
             if (int(~status & ViewManagerCreated) || activeCamera == nullptr)

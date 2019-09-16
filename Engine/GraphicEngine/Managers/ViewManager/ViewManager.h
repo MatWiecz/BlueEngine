@@ -31,7 +31,7 @@ namespace MatWiecz
     {
         struct VideoManagerStatusStruct {};
         typedef BitField <VideoManagerStatusStruct> VideoManagerStatus;
-        const VideoManagerStatus ViewManagerCreated;
+        const VideoManagerStatus ViewManagerCreated(BitFieldSymbols::Reset);
         const VideoManagerStatus VideoManagerInUse;
         
         class ViewManagerClass
@@ -51,7 +51,7 @@ namespace MatWiecz
             
             ViewManagerRetVal Create();
             
-            bool IsCreated ();
+            bool IsCreated();
             
             ViewManagerRetVal RegisterCamera(Camera *camera,
                                              unsigned int *retCameraId);
@@ -61,7 +61,7 @@ namespace MatWiecz
             ViewManagerRetVal UnregisterCamera(unsigned int retCameraId);
             
             ViewManagerRetVal UpdateProjection(double aspect);
-    
+            
             ViewManagerRetVal PerformViewTransformation();
             
             ViewManagerRetVal Destroy();

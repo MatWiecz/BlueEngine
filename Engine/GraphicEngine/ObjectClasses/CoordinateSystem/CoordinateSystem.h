@@ -19,18 +19,21 @@ namespace MatWiecz
 {
     namespace BlueEngine
     {
-        class CoordinateSystemClass : public BaseObjectClass
+        class CoordinateSystemClass: public BaseObjectClass
         {
             public:
-    
-            BaseObjectClassRetVal Create(BaseObjectClass *parentObject,
-                                         std::string objectName,
-                                         float xPos, float yPos, float zPos,
-                                         float xAngle, float yAngle,
-                                         float zAngle);
-    
-            BaseObjectClassRetVal Destroy();
             
+            CoordinateSystemClass();
+            
+            BaseObjectClassRetVal CreateOrigin(std::string objectName);
+    
+            BaseObjectClassRetVal CreateCoordinateSystem(
+                BaseObjectClass *parentObject, std::string objectName,
+                float xPos, float yPos, float zPos,
+                float xAngle, float yAngle, float zAngle);
+    
+            static void DrawFunction(BaseObjectClassFlags
+                                     flags);
         };
     };
 }

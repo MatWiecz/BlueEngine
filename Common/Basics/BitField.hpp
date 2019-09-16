@@ -9,6 +9,12 @@ namespace MatWiecz
 {
     namespace BlueEngine
     {
+        typedef enum class BitFieldSymbolsEnum
+        {
+            Auto,
+            Reset
+        } BitFieldSymbols;
+        
         template <typename T>
         class BitField
         {
@@ -18,98 +24,120 @@ namespace MatWiecz
             int value;
             
             public:
-            BitField(int initValue = -1);
+            BitField(int initValue);
+    
+            BitField(BitFieldSymbols initValue = BitFieldSymbols::Auto);
             
             ~BitField() = default;
             
             explicit operator int() const;
             
             const BitField <T> operator&(
-                const BitField <T> & other) const;
+                const BitField <T> &other) const;
             
             const BitField <T> operator|(
-                const BitField <T> & other) const;
+                const BitField <T> &other) const;
             
             const BitField <T> operator^(
-                const BitField <T> & other) const;
+                const BitField <T> &other) const;
             
             const BitField <T> operator~() const;
             
-            BitField <T> & operator&=(const BitField <T> & other);
+            BitField <T> &operator=(const BitField <T> &other);
             
-            BitField <T> & operator|=(const BitField <T> & other);
+            BitField <T> &operator&=(const BitField <T> &other);
             
-            BitField <T> & operator^=(const BitField <T> & other);
+            BitField <T> &operator|=(const BitField <T> &other);
+            
+            BitField <T> &operator^=(const BitField <T> &other);
             
         };
-    
+        
         template <typename T>
-        int BitField<T>::nextInitValue = 1;
-    
+        int BitField <T>::nextInitValue = 1;
+        
         template <typename T>
-        BitField<T>::BitField(int initValue)
+        BitField <T>::BitField(int initValue)
         {
-            if(initValue == -1)
-            {
-                value = nextInitValue;
-                nextInitValue <<= 1;
-            }
-            else
-                value = initValue;
+            value = initValue;
         }
     
         template <typename T>
-        BitField<T>::operator int() const
+        BitField <T>::BitField(BitFieldSymbols initValue)
+        {
+            switch (initValue)
+            {
+                case BitFieldSymbols::Auto:
+                    value = nextInitValue;
+                    nextInitValue <<= 1;
+                    break;
+                case BitFieldSymbols::Reset:
+                    value = 1;
+                    nextInitValue = 2;
+                    break;
+            }
+        }
+        
+        template <typename T>
+        BitField <T>::operator int() const
         {
             return value;
         }
-    
+        
         template <typename T>
-        const BitField <T> BitField<T>::operator&(
+        const BitField <T> BitField <T>::operator&(
             const BitField <T> &other) const
         {
             return BitField <T>(value & other.value);
         }
-    
+        
         template <typename T>
-        const BitField <T> BitField<T>::operator|(
+        const BitField <T> BitField <T>::operator|(
             const BitField <T> &other) const
         {
             return BitField <T>(value | other.value);
         }
-    
+        
         template <typename T>
-        const BitField <T> BitField<T>::operator^(
-            const BitField <T> & other) const
+        const BitField <T> BitField <T>::operator^(
+            const BitField <T> &other) const
         {
             return BitField <T>(value ^ other.value);
         }
-    
+        
         template <typename T>
-        const BitField <T> BitField<T>::operator~() const
+        const BitField <T> BitField <T>::operator~() const
         {
             return BitField <T>(~value);
         }
     
         template <typename T>
-        BitField <T> & BitField<T>::operator&=(
-            const BitField <T> & other)
+        BitField <T> &BitField <T>::operator=(
+            const BitField <T> &other)
+        {
+            value = other.value;
+            return *this;
+        }
+        
+        template <typename T>
+        BitField <T> &BitField <T>::operator&=(
+            const BitField <T> &other)
         {
             value &= other.value;
             return *this;
         }
-    
+        
         template <typename T>
-        BitField <T> & BitField<T>::operator|=(
-            const BitField <T> & other)
+        BitField <T> &BitField <T>::operator|=(
+            const BitField <T> &other)
         {
             value |= other.value;
             return *this;
         }
-    
+        
         template <typename T>
-        BitField <T> & BitField<T>::operator^=(
-            const BitField <T> & other)
+        BitField <T> &BitField <T>::operator^=(
+            const BitField <T> &other)
         {
             value ^= other.value;
             return *this;
