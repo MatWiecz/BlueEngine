@@ -94,22 +94,22 @@ namespace MatWiecz
             return BaseObjectClassRetVal::Success;
         }
         
-        void CameraClass::DrawFunction(BaseObjectClassFlags flags)
+        void CameraClass::DrawFunction(const BaseObjectClass & object)
         {
-            const float axisLength = 1000000.0f;
-            glBegin(GL_LINES);
-            {
-                glColor3f(1.0f, 0.0f, 0.0f);
-                glVertex3f(-axisLength, 0.0f, 0.0f);
-                glVertex3f(axisLength, 0.0f, 0.0f);
-                glColor3f(0.0f, 1.0f, 0.0f);
-                glVertex3f(0.0f, -axisLength, 0.0f);
-                glVertex3f(0.0f, axisLength, 0.0f);
-                glColor3f(0.0f, 0.0f, 1.0f);
-                glVertex3f(0.0f, 0.0f, -axisLength);
-                glVertex3f(0.0f, 0.0f, axisLength);
-            }
-            glEnd();
+            //const float length = 1000000.0f;
+            //glBegin(GL_LINES);
+            //{
+            //    glColor3f(1.0f, 0.0f, 0.0f);
+            //    glVertex3f(-length, 0.0f, 0.0f);
+            //    glVertex3f(length, 0.0f, 0.0f);
+            //    glColor3f(0.0f, 1.0f, 0.0f);
+            //    glVertex3f(0.0f, -length, 0.0f);
+            //    glVertex3f(0.0f, length, 0.0f);
+            //    glColor3f(0.0f, 0.0f, 1.0f);
+            //    glVertex3f(0.0f, 0.0f, -length);
+            //    glVertex3f(0.0f, 0.0f, length);
+            //}
+            //glEnd();
         }
     }
 }

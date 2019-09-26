@@ -21,6 +21,12 @@ namespace MatWiecz
     {
         class CoordinateSystemClass: public BaseObjectClass
         {
+            protected:
+            GLfloat length;
+            
+            static void SetLineColor(BaseObjectClassFlags flags,
+                              GLfloat red, GLfloat green, GLfloat blue);
+            
             public:
             
             CoordinateSystemClass();
@@ -30,10 +36,10 @@ namespace MatWiecz
             BaseObjectClassRetVal CreateCoordinateSystem(
                 BaseObjectClass *parentObject, std::string objectName,
                 float xPos, float yPos, float zPos,
-                float xAngle, float yAngle, float zAngle);
+                float xAngle, float yAngle, float zAngle,
+                GLfloat axisLength = 1000000.0f);
     
-            static void DrawFunction(BaseObjectClassFlags
-                                     flags);
+            static void DrawFunction(const BaseObjectClass & object);
         };
     };
 }

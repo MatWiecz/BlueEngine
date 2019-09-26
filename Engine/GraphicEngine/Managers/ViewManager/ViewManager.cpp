@@ -9,7 +9,7 @@ namespace MatWiecz
     namespace BlueEngine
     {
         ViewManagerClass::ViewManagerClass(): status(0),
-                                              activeCamera(nullptr),
+                                              activeCameraId(0),
                                               nextCameraId(1),
                                               toUpdate(false)
         {
@@ -42,43 +42,43 @@ namespace MatWiecz
             for (auto &record : cameras)
                 if (record.second->GetObjectId() == camera->GetObjectId())
                     return ViewManagerRetVal::CameraAlreadyRegistered;
-            cameras.push_back(std::pair <unsigned int, Camera *>(nextCameraId,
-                                                                 camera));
+            cameras[nextCameraId] = camera;
             *retCameraId = nextCameraId++;
             return ViewManagerRetVal::Success;
         }
         
         ViewManagerRetVal ViewManagerClass::ActivateCamera(
-            unsigned int retCameraId)
+            unsigned int cameraId)
         {
             if (int(~status & ViewManagerCreated))
                 return ViewManagerRetVal::InvalidOperation;
-            for (auto &record : cameras)
-                if (record.first == retCameraId)
-                {
-                    activeCamera = record.second;
-                    toUpdate = true;
-                    return ViewManagerRetVal::Success;
-                }
+            if (cameraId == 0)
+            {
+                activeCameraId = 0;
+                return ViewManagerRetVal::Success;
+            }
+            auto foundCameraRecord = cameras.find(cameraId);
+            if (foundCameraRecord != cameras.end())
+            {
+                activeCameraId = cameraId;
+                toUpdate = true;
+                return ViewManagerRetVal::Success;
+            }
             return ViewManagerRetVal::InvalidArgument;
         }
         
         ViewManagerRetVal ViewManagerClass::UnregisterCamera(
-            unsigned int retCameraId)
+            unsigned int cameraId)
         {
             if (int(~status & ViewManagerCreated))
                 return ViewManagerRetVal::InvalidOperation;
-            auto recordIter = std::begin(cameras);
-            while (recordIter != std::end(cameras))
+            if (cameraId == activeCameraId)
+                return ViewManagerRetVal::CameraAlreadyInUse;
+            auto foundCameraRecord = cameras.find(cameraId);
+            if (foundCameraRecord != cameras.end())
             {
-                if (recordIter->first == retCameraId)
-                {
-                    if (recordIter->second == activeCamera)
-                        return ViewManagerRetVal::CameraAlreadyInUse;
-                    cameras.erase(recordIter);
-                    return ViewManagerRetVal::Success;
-                }
-                recordIter++;
+                cameras.erase(foundCameraRecord);
+                return ViewManagerRetVal::Success;
             }
             return ViewManagerRetVal::InvalidArgument;
         }
@@ -86,21 +86,35 @@ namespace MatWiecz
         ViewManagerRetVal ViewManagerClass::UpdateProjection(
             double aspect)
         {
-            if (int(~status & ViewManagerCreated) || activeCamera == nullptr)
+            if (int(~status & ViewManagerCreated) || activeCameraId == 0)
                 return ViewManagerRetVal::InvalidOperation;
             if (toUpdate)
             {
-                activeCamera->UpdateProjection(aspect);
                 toUpdate = false;
+                if (cameras[activeCameraId]->UpdateProjection(aspect) !=
+                    BaseObjectClassRetVal::Success)
+                {
+                    unsigned int lastActiveCamera = activeCameraId;
+                    activeCameraId = 0;
+                    UnregisterCamera(lastActiveCamera);
+                    return ViewManagerRetVal::InvalidOperation;
+                }
             }
             return ViewManagerRetVal::Success;
         }
         
         ViewManagerRetVal ViewManagerClass::PerformViewTransformation()
         {
-            if (int(~status & ViewManagerCreated) || activeCamera == nullptr)
+            if (int(~status & ViewManagerCreated) || activeCameraId == 0)
                 return ViewManagerRetVal::InvalidOperation;
-            activeCamera->PerformViewTransformation();
+            if (cameras[activeCameraId]->PerformViewTransformation() !=
+                BaseObjectClassRetVal::Success)
+            {
+                unsigned int lastActiveCamera = activeCameraId;
+                activeCameraId = 0;
+                UnregisterCamera(lastActiveCamera);
+                return ViewManagerRetVal::InvalidOperation;
+            }
             return ViewManagerRetVal::Success;
         }
         
@@ -110,7 +124,7 @@ namespace MatWiecz
                 return ViewManagerRetVal::InvalidOperation;
             status = VideoManagerStatus(0);
             cameras.clear();
-            activeCamera = nullptr;
+            activeCameraId = 0;
             nextCameraId = 1;
             toUpdate = false;
             return ViewManagerRetVal::Success;

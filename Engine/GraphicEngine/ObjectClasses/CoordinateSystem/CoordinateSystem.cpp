@@ -30,36 +30,49 @@ namespace MatWiecz
             objectFunction = CoordinateSystem::DrawFunction;
             flags |= ObjectCreated | ObjectVisible | ObjectShowPoints |
                      ObjectShowEdges | ObjectShowFaces;
+            length = 1000000.0f;
             return BaseObjectClassRetVal::Success;
         }
     
         BaseObjectClassRetVal CoordinateSystemClass::CreateCoordinateSystem(
             BaseObjectClass *parentObject, std::string objectName, float xPos,
-            float yPos, float zPos, float xAngle, float yAngle, float zAngle)
+            float yPos, float zPos, float xAngle, float yAngle, float zAngle,
+            GLfloat axisLength)
         {
             BaseObjectClassRetVal retVal = Create(parentObject, objectName,
                                                   xPos, yPos, zPos,
                                                   xAngle, yAngle, zAngle);
             if(retVal == BaseObjectClassRetVal::Success)
                 objectFunction = CoordinateSystem::DrawFunction;
+            length = axisLength;
             return retVal;
             
         }
     
-        void CoordinateSystemClass::DrawFunction(BaseObjectClassFlags flags)
+        void CoordinateSystemClass::SetLineColor(BaseObjectClassFlags flags,
+                                                 GLfloat red, GLfloat green,
+                                                 GLfloat blue)
         {
-            const float axisLength = 1000000.0f;
+            if(int(flags&ObjectTextured))
+                glColor3f(red, green, blue);
+            else
+                glColor3f(1.0f, 1.0f, 1.0f);
+        }
+    
+        void CoordinateSystemClass::DrawFunction(const BaseObjectClass & object)
+        {
+            const auto & coordinateSystem = (CoordinateSystem &) object;
             glBegin(GL_LINES);
             {
-                glColor3f(1.0f, 0.0f, 0.0f);
-                glVertex3f(-axisLength, 0.0f, 0.0f);
-                glVertex3f(axisLength, 0.0f, 0.0f);
-                glColor3f(0.0f, 1.0f, 0.0f);
-                glVertex3f(0.0f, -axisLength, 0.0f);
-                glVertex3f(0.0f, axisLength, 0.0f);
-                glColor3f(0.0f, 0.0f, 1.0f);
-                glVertex3f(0.0f, 0.0f, -axisLength);
-                glVertex3f(0.0f, 0.0f, axisLength);
+                SetLineColor(coordinateSystem.flags, 1.0f, 0.0f, 0.0f);
+                glVertex3f(-coordinateSystem.length, 0.0f, 0.0f);
+                glVertex3f(coordinateSystem.length, 0.0f, 0.0f);
+                SetLineColor(coordinateSystem.flags, 0.0f, 1.0f, 0.0f);
+                glVertex3f(0.0f, -coordinateSystem.length, 0.0f);
+                glVertex3f(0.0f, coordinateSystem.length, 0.0f);
+                SetLineColor(coordinateSystem.flags, 0.0f, 0.0f, 1.0f);
+                glVertex3f(0.0f, 0.0f, -coordinateSystem.length);
+                glVertex3f(0.0f, 0.0f, coordinateSystem.length);
             }
             glEnd();
         }

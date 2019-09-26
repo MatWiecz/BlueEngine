@@ -40,11 +40,14 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
             blueEngine.SetGraphicsEngine(&graphicsEngine);
             blueEngine.Start();
             worldOrigin = graphicsEngine.GetOrigin();
-            camera.CreateCamera(worldOrigin, "Main camera", 10.0f, 10.0f, 100.0f,
-                          0.0f, 0.0f, 0.0f);
+            worldOrigin->UpdateFlags(BaseObjectClassUpdateFlagsMode::SetFlags,
+                                     ObjectTextured);
+            camera.CreateCamera(worldOrigin, "Main camera", 10.0f, 10.0f,
+                                100.0f, 0.0f, 0.0f, 0.0f);
+            camera.SetUpPerspectiveCamera(45.0, 1.0, 1000000.0);
             camera.SetAngleFunction(CameraAngleFunction);
-            tempCamera.CreateCamera(worldOrigin, "Temp camera", 10.0f, 10.0f, 10.0f,
-                        0.0f, 0.0f, 0.0f);
+            tempCamera.CreateCamera(worldOrigin, "Temp camera", 10.0f, 10.0f,
+                                    10.0f, 0.0f, 0.0f, 0.0f);
             viewManager.RegisterCamera(&camera, &cameraId);
             viewManager.ActivateCamera(cameraId);
             return 0;

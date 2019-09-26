@@ -38,11 +38,10 @@ namespace MatWiecz
         {
             private:
             VideoManagerStatus status;
-            std::vector <std::pair <unsigned int, Camera *>> cameras;
-            Camera *activeCamera;
+            std::map <unsigned int, Camera *> cameras;
+            unsigned int activeCameraId;
             unsigned int nextCameraId;
             bool toUpdate;
-            //TODO: What if the Camera's object will be destroyed suddenly?
             
             public:
             ViewManagerClass();
@@ -56,9 +55,9 @@ namespace MatWiecz
             ViewManagerRetVal RegisterCamera(Camera *camera,
                                              unsigned int *retCameraId);
             
-            ViewManagerRetVal ActivateCamera(unsigned int retCameraId);
+            ViewManagerRetVal ActivateCamera(unsigned int cameraId);
             
-            ViewManagerRetVal UnregisterCamera(unsigned int retCameraId);
+            ViewManagerRetVal UnregisterCamera(unsigned int cameraId);
             
             ViewManagerRetVal UpdateProjection(double aspect);
             

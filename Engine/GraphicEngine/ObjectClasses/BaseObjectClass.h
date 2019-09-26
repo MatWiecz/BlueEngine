@@ -30,6 +30,7 @@ namespace MatWiecz
 #include <stdlib.h>
 #include <string>
 #include <vector>
+#include <map>
 #include <GL/glu.h>
 
 #include "../../../Common/Basics/BitField.hpp"
@@ -51,7 +52,7 @@ namespace MatWiecz
         
         typedef void (*AngleFunction)(float [3]);
         
-        typedef void (*ObjectFunction)(BaseObjectClassFlags);
+        typedef void (*ObjectFunction)(const BaseObjectClass &);
         
         class BaseObjectClassClass
         {
@@ -60,14 +61,13 @@ namespace MatWiecz
             unsigned int id;
             BaseObjectClassFlags flags;
             BaseObjectClass *parent;
-            unsigned int parentChildNo;
             std::string name;
             float pos[3];
             float angle[3];
             ObjectFunction objectFunction;
             PosFunction posFunction;
             AngleFunction angleFunction;
-            std::vector <BaseObjectClass *> children;
+            std::map <unsigned int, BaseObjectClass *> children;
             
             public:
             BaseObjectClassClass();
@@ -87,12 +87,12 @@ namespace MatWiecz
             
             BaseObjectClass *GetParent();
             
-            const std::vector <BaseObjectClass *> &GetChildren();
+            const std::map <unsigned int, BaseObjectClass *> & GetChildren();
             
             BaseObjectClassRetVal
             UpdateFlags(BaseObjectClassUpdateFlagsMode mode,
                         BaseObjectClassFlags flagsMask,
-                        bool recursively);
+                        bool recursively = false);
             
             BaseObjectClassRetVal SetObjectFunction(ObjectFunction
                                                     newObjectFunction);

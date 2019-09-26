@@ -53,8 +53,7 @@ namespace MatWiecz
             
             BaseObjectClassRetVal PerformViewTransformation();
             
-            static void DrawFunction(BaseObjectClassFlags
-                                     flags);
+            static void DrawFunction(const BaseObjectClass & object);
             
         };
     };

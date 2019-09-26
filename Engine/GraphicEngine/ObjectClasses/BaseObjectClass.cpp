@@ -32,8 +32,7 @@ namespace MatWiecz
                 return BaseObjectClassRetVal::InvalidArgument;
             id = nextId++;
             parent = parentObject;
-            parentChildNo = (unsigned int) parent->children.size();
-            parent->children.push_back(this);
+            parent->children[id] = this;
             name = objectName;
             pos[0] = xPos;
             pos[1] = yPos;
@@ -64,7 +63,7 @@ namespace MatWiecz
             return parent;
         }
         
-        const std::vector <BaseObjectClass *> &
+        const std::map <unsigned int, BaseObjectClass *> &
         BaseObjectClassClass::GetChildren()
         {
             return children;
@@ -92,7 +91,7 @@ namespace MatWiecz
             }
             if (recursively)
                 for (auto &child : children)
-                    child->UpdateFlags(mode, flagsMask, true);
+                    child.second->UpdateFlags(mode, flagsMask, true);
             return BaseObjectClassRetVal::Success;
         }
         
@@ -177,11 +176,11 @@ namespace MatWiecz
             if (objectFunction != nullptr && int(flags & ObjectVisible))
             {
                 glPushMatrix();
-                objectFunction(flags);
+                objectFunction(*this);
                 glPopMatrix();
             }
             for (auto &child : children)
-                child->Execute();
+                child.second->Execute();
             glPopMatrix();
             return BaseObjectClassRetVal::Success;
         }
@@ -191,11 +190,10 @@ namespace MatWiecz
             if (int(~flags & ObjectCreated))
                 return BaseObjectClassRetVal::InvalidOperation;
             for (auto &child : children)
-                child->Destroy();
+                child.second->Destroy();
             flags = BaseObjectClassFlags(0);
             if (parent != nullptr)
-                parent->children.erase(parent->children.begin()
-                                       + parentChildNo);
+                parent->children.erase(id);
             parent = nullptr;
             id = 0;
             return BaseObjectClassRetVal::Success;

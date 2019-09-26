@@ -31,7 +31,7 @@ set(SOURCE_FILES
         Engine/GraphicEngine/Managers/ViewManager/ViewManager.h
 
         Engine/GraphicEngine/ObjectClasses/CoordinateSystem/CoordinateSystem.cpp
-        Engine/GraphicEngine/ObjectClasses/CoordinateSystem/CoordinateSystem.h)
+        Engine/GraphicEngine/ObjectClasses/CoordinateSystem/CoordinateSystem.h Engine/GraphicEngine/ObjectClasses/CoordinateSystem/AdvancedCoordinateSystem/AdvancedCoordinateSystem.cpp Engine/GraphicEngine/ObjectClasses/CoordinateSystem/AdvancedCoordinateSystem/AdvancedCoordinateSystem.h)
 
 add_compile_options("-static-libstdc++")
 add_compile_options("-static-libgcc")
