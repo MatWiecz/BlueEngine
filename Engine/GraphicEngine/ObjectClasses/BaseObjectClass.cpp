@@ -28,7 +28,8 @@ namespace MatWiecz
         {
             if (int(flags & ObjectCreated))
                 return BaseObjectClassRetVal::InvalidOperation;
-            if (parentObject == nullptr || !parentObject->IsCreated())
+            if (parentObject == nullptr || !parentObject->IsCreated() ||
+                objectName.empty())
                 return BaseObjectClassRetVal::InvalidArgument;
             id = nextId++;
             parent = parentObject;
@@ -189,7 +190,8 @@ namespace MatWiecz
         {
             if (int(~flags & ObjectCreated))
                 return BaseObjectClassRetVal::InvalidOperation;
-            for (auto &child : children)
+            auto tempChildren(children);
+            for (auto &child : tempChildren)
                 child.second->Destroy();
             flags = BaseObjectClassFlags(0);
             if (parent != nullptr)

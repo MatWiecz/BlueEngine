@@ -3,6 +3,7 @@
 //
 
 #include "CoordinateSystem.h"
+#include "../../../../Common/Graphic/Colours.h"
 
 namespace MatWiecz
 {
@@ -39,11 +40,14 @@ namespace MatWiecz
             float yPos, float zPos, float xAngle, float yAngle, float zAngle,
             GLfloat axisLength)
         {
+            if(axisLength<= 0.0f)
+                return BaseObjectClassRetVal::InvalidArgument;
             BaseObjectClassRetVal retVal = Create(parentObject, objectName,
                                                   xPos, yPos, zPos,
                                                   xAngle, yAngle, zAngle);
-            if(retVal == BaseObjectClassRetVal::Success)
-                objectFunction = CoordinateSystem::DrawFunction;
+            if(retVal != BaseObjectClassRetVal::Success)
+                return retVal;
+            objectFunction = CoordinateSystem::DrawFunction;
             length = axisLength;
             return retVal;
             
@@ -76,5 +80,5 @@ namespace MatWiecz
             }
             glEnd();
         }
-    };
+    }
 }

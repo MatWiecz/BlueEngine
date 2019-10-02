@@ -32,7 +32,7 @@ namespace MatWiecz
         {
             return bool(int(status & GraphicsEngineCreated));
         }
-    
+        
         GraphicsEngineRetVal GraphicsEngineClass::SetVideoOutputWindow(
             VideoOutputWindow *newVideoOutputWindow)
         {

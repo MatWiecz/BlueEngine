@@ -23,9 +23,19 @@ namespace MatWiecz
         class AdvancedCoordinateSystemClass: public CoordinateSystem
         {
             protected:
-            const ViewManager * viewManager;
-            GLfloat cellSize;
+            bool showValuesFlag;
             
+            public:
+            AdvancedCoordinateSystemClass();
+    
+            BaseObjectClassRetVal CreateAdvancedCoordinateSystem(
+                BaseObjectClass *parentObject, std::string objectName,
+                float xPos, float yPos, float zPos,
+                float xAngle, float yAngle, float zAngle,
+                GLfloat axisLength = 1000000.0f,
+                bool showValues = true);
+    
+            static void DrawFunction(const BaseObjectClass & object);
         };
     };
 }

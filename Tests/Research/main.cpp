@@ -6,6 +6,9 @@
 
 #include <windows.h>
 #include "../../BlueEngineHeader.h"
+#include "../../Engine/GraphicEngine/ObjectClasses/CoordinateSystem/AdvancedCoordinateSystem/AdvancedCoordinateSystem.h"
+#include "../../Common/Maths/Matrix.hpp"
+
 using namespace MatWiecz::BlueEngine;
 
 Engine blueEngine;
@@ -16,10 +19,15 @@ Camera camera;
 Camera tempCamera;
 unsigned int cameraId;
 CoordinateSystem * worldOrigin;
+AdvancedCoordinateSystem extraCoordinateSystem;
+Matrix<float, 4, 2> aMatrix;
+Matrix<float, 2, 3> bMatrix;
+Matrix<float, 4, 3> cMatrix;
 
 void CameraAngleFunction (float angle [3])
 {
     angle[1] += 0.1f;
+    (aMatrix * bMatrix) + -cMatrix;
 }
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -40,8 +48,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
             blueEngine.SetGraphicsEngine(&graphicsEngine);
             blueEngine.Start();
             worldOrigin = graphicsEngine.GetOrigin();
-            worldOrigin->UpdateFlags(BaseObjectClassUpdateFlagsMode::SetFlags,
-                                     ObjectTextured);
+            //worldOrigin->UpdateFlags(BaseObjectClassUpdateFlagsMode::SetFlags,
+            //                         ObjectTextured);
             camera.CreateCamera(worldOrigin, "Main camera", 10.0f, 10.0f,
                                 100.0f, 0.0f, 0.0f, 0.0f);
             camera.SetUpPerspectiveCamera(45.0, 1.0, 1000000.0);
@@ -50,6 +58,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
                                     10.0f, 0.0f, 0.0f, 0.0f);
             viewManager.RegisterCamera(&camera, &cameraId);
             viewManager.ActivateCamera(cameraId);
+            extraCoordinateSystem.CreateAdvancedCoordinateSystem(
+                worldOrigin, "Extra", 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
             return 0;
             
         case WM_CLOSE:

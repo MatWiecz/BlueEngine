@@ -41,7 +41,7 @@ namespace MatWiecz
     
             static void DrawFunction(const BaseObjectClass & object);
         };
-    };
+    }
 }
 
 #endif //BLUEENGINE_COORDINATESYSTEM_H
