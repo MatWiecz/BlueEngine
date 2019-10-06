@@ -5,8 +5,6 @@
 #ifndef BLUEENGINE_COORDINATESYSTEM_H
 #define BLUEENGINE_COORDINATESYSTEM_H
 
-#include "../BaseObjectClass.h"
-
 namespace MatWiecz
 {
     namespace BlueEngine
@@ -14,6 +12,8 @@ namespace MatWiecz
         typedef class CoordinateSystemClass CoordinateSystem;
     }
 }
+
+#include "../BaseObjectClass.h"
 
 namespace MatWiecz
 {

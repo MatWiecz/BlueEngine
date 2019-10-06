@@ -6,7 +6,7 @@
 #define BLUEENGINE_MATRIX_H
 
 #include <array>
-#include "../Basics/BitField.hpp"
+#include "../../Basics/BitField.hpp"
 
 namespace MatWiecz
 {
@@ -36,7 +36,7 @@ namespace MatWiecz
             void SetMatrix(
                 MatrixOptions newOptions, dataType *sourceData = nullptr);
             
-            dataType &Elem(unsigned int row, unsigned int column);
+            dataType &Elem(unsigned int row, unsigned int column) const;
             
             explicit operator dataType *() const;
             
@@ -89,7 +89,7 @@ namespace MatWiecz
         
         template <typename dataType, unsigned int rows, unsigned int columns>
         dataType &Matrix <dataType, rows, columns>::Elem(
-            unsigned int row, unsigned int column)
+            unsigned int row, unsigned int column) const
         {
             if (row < rows & column < columns)
                 return data[row * columns + column];
@@ -103,7 +103,7 @@ namespace MatWiecz
         }
         
         template <typename dataType, unsigned int rows, unsigned int columns>
-        Matrix <dataType, rows, columns>
+        const Matrix <dataType, rows, columns>
         operator+(const Matrix <dataType, rows, columns> &aMatrix,
                   const Matrix <dataType, rows, columns> &bMatrix)
         {
@@ -117,7 +117,7 @@ namespace MatWiecz
         }
         
         template <typename dataType, unsigned int rows, unsigned int columns>
-        Matrix <dataType, rows, columns>
+        const Matrix <dataType, rows, columns>
         operator-(const Matrix <dataType, rows, columns> &aMatrix,
                   const Matrix <dataType, rows, columns> &bMatrix)
         {
@@ -131,7 +131,7 @@ namespace MatWiecz
         }
         
         template <typename dataType, unsigned int rows, unsigned int columns>
-        Matrix <dataType, rows, columns>
+        const Matrix <dataType, rows, columns>
         operator-(const Matrix <dataType, rows, columns> &aMatrix)
         {
             Matrix <dataType, rows, columns> tempMatrix;
@@ -143,7 +143,7 @@ namespace MatWiecz
         }
         
         template <typename dataType, unsigned int rows, unsigned int columns>
-        Matrix <dataType, rows, columns>
+        const Matrix <dataType, rows, columns>
         operator*(dataType factor,
                   const Matrix <dataType, rows, columns> &aMatrix)
         {
@@ -156,7 +156,7 @@ namespace MatWiecz
         }
         
         template <typename dataType, unsigned int rows, unsigned int columns>
-        Matrix <dataType, rows, columns>
+        const Matrix <dataType, rows, columns>
         operator*(const Matrix <dataType, rows, columns> &aMatrix,
                   dataType factor)
         {
@@ -165,7 +165,7 @@ namespace MatWiecz
         
         template <typename dataType, unsigned int m, unsigned int n,
             unsigned int p>
-        Matrix <dataType, m, p>
+        const Matrix <dataType, m, p>
         operator*(const Matrix <dataType, m, n> &aMatrix,
                   const Matrix <dataType, n, p> &bMatrix)
         {

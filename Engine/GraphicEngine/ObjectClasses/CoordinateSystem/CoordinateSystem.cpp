@@ -66,19 +66,22 @@ namespace MatWiecz
         void CoordinateSystemClass::DrawFunction(const BaseObjectClass & object)
         {
             const auto & coordinateSystem = (CoordinateSystem &) object;
-            glBegin(GL_LINES);
+            if(int(coordinateSystem.flags&ObjectShowEdges))
             {
-                SetLineColor(coordinateSystem.flags, 1.0f, 0.0f, 0.0f);
-                glVertex3f(-coordinateSystem.length, 0.0f, 0.0f);
-                glVertex3f(coordinateSystem.length, 0.0f, 0.0f);
-                SetLineColor(coordinateSystem.flags, 0.0f, 1.0f, 0.0f);
-                glVertex3f(0.0f, -coordinateSystem.length, 0.0f);
-                glVertex3f(0.0f, coordinateSystem.length, 0.0f);
-                SetLineColor(coordinateSystem.flags, 0.0f, 0.0f, 1.0f);
-                glVertex3f(0.0f, 0.0f, -coordinateSystem.length);
-                glVertex3f(0.0f, 0.0f, coordinateSystem.length);
+                glBegin(GL_LINES);
+                {
+                    SetLineColor(coordinateSystem.flags, 1.0f, 0.0f, 0.0f);
+                    glVertex3f(-coordinateSystem.length, 0.0f, 0.0f);
+                    glVertex3f(coordinateSystem.length, 0.0f, 0.0f);
+                    SetLineColor(coordinateSystem.flags, 0.0f, 1.0f, 0.0f);
+                    glVertex3f(0.0f, -coordinateSystem.length, 0.0f);
+                    glVertex3f(0.0f, coordinateSystem.length, 0.0f);
+                    SetLineColor(coordinateSystem.flags, 0.0f, 0.0f, 1.0f);
+                    glVertex3f(0.0f, 0.0f, -coordinateSystem.length);
+                    glVertex3f(0.0f, 0.0f, coordinateSystem.length);
+                }
+                glEnd();
             }
-            glEnd();
         }
     }
 }

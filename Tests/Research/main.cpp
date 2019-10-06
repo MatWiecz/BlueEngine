@@ -7,7 +7,7 @@
 #include <windows.h>
 #include "../../BlueEngineHeader.h"
 #include "../../Engine/GraphicEngine/ObjectClasses/CoordinateSystem/AdvancedCoordinateSystem/AdvancedCoordinateSystem.h"
-#include "../../Common/Maths/Matrix.hpp"
+#include "../../Common/Maths/Matrices/Matrix.hpp"
 
 using namespace MatWiecz::BlueEngine;
 

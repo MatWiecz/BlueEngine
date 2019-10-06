@@ -1,0 +1,8 @@
+//
+// Created by Mateusz on 2019-10-07.
+//
+
+#ifndef BLUEENGINE_STRAIGHTLINE_H
+#define BLUEENGINE_STRAIGHTLINE_H
+
+#endif //BLUEENGINE_STRAIGHTLINE_H
