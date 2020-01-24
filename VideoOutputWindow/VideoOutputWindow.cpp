@@ -124,7 +124,7 @@ namespace MatWiecz
             return bool(int(status & VideoOutputWindowCreated));
         }
     
-        double VideoOutputWindowClass::GetAspectRatio()
+        float VideoOutputWindowClass::GetAspectRatio()
         {
             int xUnits = 16;
             int yUnits = 9;
@@ -141,7 +141,7 @@ namespace MatWiecz
                 default:
                     break;
             }
-            return double(xUnits)/yUnits;
+            return float(xUnits)/yUnits;
         }
         
         VideoOutputWindowRetVal VideoOutputWindowClass::ResizeWindow(
@@ -153,12 +153,12 @@ namespace MatWiecz
                 return VideoOutputWindowRetVal::InvalidArgument;
             width = newWidth;
             height = newHeight;
-            int tempHeight = width / GetAspectRatio();
+            int tempHeight = int(width / GetAspectRatio());
             if (tempHeight <= height)
                 glViewport(0, (height - tempHeight) / 2, width, tempHeight);
             else
             {
-                int tempWidth = height * GetAspectRatio();
+                int tempWidth = int(height * GetAspectRatio());
                 glViewport((width - tempWidth) / 2, 0, tempWidth, height);
             }
             

@@ -82,7 +82,7 @@ namespace MatWiecz
     
             bool IsCreated();
             
-            double GetAspectRatio();
+            float GetAspectRatio();
             
             VideoOutputWindowRetVal ResizeWindow(int newWidth, int newHeight);
     

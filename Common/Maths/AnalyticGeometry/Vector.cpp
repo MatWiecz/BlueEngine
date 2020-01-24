@@ -9,33 +9,62 @@ namespace MatWiecz
 {
     namespace BlueEngine
     {
-        VectorClass::VectorClass(): components({0.0})
+        void VectorClass::Init(float *data)
         {
+            if (data != nullptr)
+            {
+                components = data;
+                outerData = true;
+            }
+            else
+            {
+                components = new float[3];
+                outerData = false;
+            }
         }
         
-        VectorClass::VectorClass(double aComp, double bComp, double cComp):
-            components({aComp, bComp, cComp})
+        VectorClass::VectorClass(float *data)
         {
+            Init(data);
+            if(!outerData)
+                components[0] = components[1] = components[2] = 0.0f;
         }
         
-        VectorClass::VectorClass(const Point &aPoint, const Point &bPoint):
-            components({bPoint.X() - aPoint.X(),
-                        bPoint.Y() - aPoint.Y(),
-                        bPoint.Z() - aPoint.Z()})
+        VectorClass::VectorClass(float aComp, float bComp, float cComp,
+                                 float *data)
         {
+            Init(data);
+            components[0] = aComp;
+            components[1] = bComp;
+            components[2] = cComp;
         }
         
-        double VectorClass::A() const
+        VectorClass::VectorClass(const Point &aPoint, const Point &bPoint,
+                                 float *data = nullptr)
+        {
+            Init(data);
+            components[0] = bPoint.X() - aPoint.X();
+            components[1] = bPoint.Y() - aPoint.Y();
+            components[2] = bPoint.Z() - aPoint.Z();
+        }
+    
+        VectorClass::~VectorClass()
+        {
+            if(!outerData)
+                delete [] components;
+        }
+        
+        float VectorClass::A() const
         {
             return components[0];
         }
         
-        double VectorClass::B() const
+        float VectorClass::B() const
         {
             return components[1];
         }
         
-        double VectorClass::C() const
+        float VectorClass::C() const
         {
             return components[2];
         }
@@ -47,39 +76,39 @@ namespace MatWiecz
                           A() * vector.B() - B() * vector.A());
         }
         
-        double VectorClass::ScalarProduct(const Vector &vector) const
+        float VectorClass::ScalarProduct(const Vector &vector) const
         {
             return A()*vector.A()+B()*vector.B()+C()*vector.C();
         }
         
-        Vector &VectorClass::IncreaseA(double delta)
+        Vector &VectorClass::IncreaseA(float delta)
         {
             components[0] += delta;
             return *this;
         }
         
-        Vector &VectorClass::IncreaseB(double delta)
+        Vector &VectorClass::IncreaseB(float delta)
         {
             components[1] += delta;
             return *this;
         }
         
-        Vector &VectorClass::IncreaseC(double delta)
+        Vector &VectorClass::IncreaseC(float delta)
         {
             components[2] += delta;
             return *this;
         }
         
-        double VectorClass::VectorNorm() const
+        float VectorClass::VectorNorm() const
         {
-            return sqrt(A() * A() + B() * B() + C() * C());
+            return float(sqrt(A() * A() + B() * B() + C() * C()));
         }
         
         Vector &VectorClass::Normalize()
         {
-            double vectorNorm = VectorNorm();
+            float vectorNorm = VectorNorm();
             Vector normalizedVector = *this;
-            if (vectorNorm == 0.0)
+            if (vectorNorm == 0.0f)
                 return normalizedVector;
             normalizedVector.components[0] /= vectorNorm;
             normalizedVector.components[1] /= vectorNorm;
@@ -87,52 +116,52 @@ namespace MatWiecz
             return normalizedVector;
         }
         
-        Vector &VectorClass::ScaleX(double factor)
+        Vector &VectorClass::ScaleX(float factor)
         {
             components[0] *= factor;
             return *this;
         }
         
-        Vector &VectorClass::ScaleY(double factor)
+        Vector &VectorClass::ScaleY(float factor)
         {
             components[1] *= factor;
             return *this;
         }
         
-        Vector &VectorClass::ScaleZ(double factor)
+        Vector &VectorClass::ScaleZ(float factor)
         {
             components[2] *= factor;
             return *this;
         }
         
-        Vector &VectorClass::RotX(double angle)
+        Vector &VectorClass::RotX(float angle)
         {
-            double oldY = components[1];
-            double oldZ = components[2];
-            components[1] = oldY * cos(angle) - oldZ * sin(angle);
-            components[2] = oldY * sin(angle) + oldZ * cos(angle);
+            float oldY = components[1];
+            float oldZ = components[2];
+            components[1] = float(oldY * cos(angle) - oldZ * sin(angle));
+            components[2] = float(oldY * sin(angle) + oldZ * cos(angle));
             return *this;
         }
         
-        Vector &VectorClass::RotY(double angle)
+        Vector &VectorClass::RotY(float angle)
         {
-            double oldX = components[0];
-            double oldZ = components[2];
-            components[0] = oldX * cos(angle) + oldZ * sin(angle);
-            components[2] = -oldX * sin(angle) + oldZ * cos(angle);
+            float oldX = components[0];
+            float oldZ = components[2];
+            components[0] = float(oldX * cos(angle) + oldZ * sin(angle));
+            components[2] = float(-oldX * sin(angle) + oldZ * cos(angle));
             return *this;
         }
         
-        Vector &VectorClass::RotZ(double angle)
+        Vector &VectorClass::RotZ(float angle)
         {
-            double oldX = components[0];
-            double oldY = components[1];
-            components[0] = oldX * cos(angle) - oldY * sin(angle);
-            components[2] = oldX * sin(angle) + oldY * cos(angle);
+            float oldX = components[0];
+            float oldY = components[1];
+            components[0] = float(oldX * cos(angle) - oldY * sin(angle));
+            components[2] = float(oldX * sin(angle) + oldY * cos(angle));
             return *this;
         }
         
-        Vector &VectorClass::RotVector(const Vector &vector, double angle)
+        Vector &VectorClass::RotVector(const Vector &vector, float angle)
         {
             Point vectorEnd(A(), B(), C());
             vectorEnd.RotVector(Point(), vector, angle);
@@ -163,14 +192,14 @@ namespace MatWiecz
             return Vector(-vector.A(), -vector.B(), -vector.C());
         }
     
-        const Vector operator*(const Vector &vector, double factor)
+        const Vector operator*(const Vector &vector, float factor)
         {
             return Vector(factor*vector.A(),
                           factor*vector.B(),
                           factor*vector.C());
         }
     
-        const Vector operator*(double factor, const Vector &vector)
+        const Vector operator*(float factor, const Vector &vector)
         {
             return vector*factor;
         }
@@ -181,7 +210,7 @@ namespace MatWiecz
             return Vector(aVector.VectorProduct(bVector));
         }
     
-        double operator*(const Vector &aVector,
+        float operator*(const Vector &aVector,
                          const Vector &bVector)
         {
             return aVector.ScalarProduct(bVector);

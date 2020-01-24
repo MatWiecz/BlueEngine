@@ -22,28 +22,38 @@ namespace MatWiecz
         class PointClass
         {
             protected:
-            double pos[3];
+            float *pos;
+            bool outerData;
+            
+            void Init(float * data);
             
             public:
-            PointClass();
-            PointClass(double xPos, double yPos, double zPos);
-            ~PointClass() = default;
+            PointClass(float *data = nullptr);
             
-            double X() const;
-            double Y() const;
-            double Z() const;
-    
-            double GetDistance (const Point & otherPoint) const;
+            PointClass(float xPos, float yPos, float zPos,
+                       float *data = nullptr);
             
-            Point & TransX(double delta);
-            Point & TransY(double delta);
-            Point & TransZ(double delta);
+            ~PointClass();
             
-            Point & TransVector(const Vector & vector);
+            float X() const;
             
-            Point & RotVector(const Point & point,
-                              const Vector & vector,
-                              double angle);
+            float Y() const;
+            
+            float Z() const;
+            
+            float GetDistance(const Point &otherPoint) const;
+            
+            Point &TransX(float delta);
+            
+            Point &TransY(float delta);
+            
+            Point &TransZ(float delta);
+            
+            Point &TransVector(const Vector &vector);
+            
+            Point &RotVector(const Point &point,
+                             const Vector &vector,
+                             float angle);
         };
     }
 }

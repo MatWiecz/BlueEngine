@@ -13,7 +13,9 @@ namespace MatWiecz
     }
 }
 
+#include "Point.h"
 #include "Vector.h"
+#include "../Matrices/Matrix.hpp"
 
 namespace MatWiecz
 {
@@ -38,19 +40,26 @@ namespace MatWiecz
             PlaneClass(const Point &planePoint,
                        const Vector &aVector,
                        const Vector &bVector);
-    
+            
             Point MainPoint() const;
-    
+            
             Vector NormalVector() const;
             
-            Plane & TransNormal(double delta);
-            Plane & TransX(double delta);
-            Plane & TransY(double delta);
-            Plane & TransZ(double delta);
+            Plane &TransNormal(float delta);
             
-            Plane & RotVector(const Point & point,
-                              const Vector & vector,
-                              double angle);
+            Plane &TransVector(const Vector &vector);
+            
+            Plane &TransX(float delta);
+            
+            Plane &TransY(float delta);
+            
+            Plane &TransZ(float delta);
+            
+            Plane &RotVector(const Point &point,
+                             const Vector &vector,
+                             float angle);
+            
+            Matrix<float, 1, 4> GetGeneralFormMatrix() const;
         };
     };
 }

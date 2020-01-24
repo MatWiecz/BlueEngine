@@ -30,13 +30,13 @@ namespace MatWiecz
             Matrix(
                 MatrixOptions initOptions = MatrixOptions(0),
                 dataType *sourceData = nullptr);
-    
+            
             ~Matrix();
             
             void SetMatrix(
                 MatrixOptions newOptions, dataType *sourceData = nullptr);
             
-            dataType &Elem(unsigned int row, unsigned int column) const;
+            dataType &operator()(unsigned int row, unsigned int column) const;
             
             explicit operator dataType *() const;
             
@@ -53,7 +53,7 @@ namespace MatWiecz
         {
             SetMatrix(initOptions, sourceData);
         }
-    
+        
         template <typename dataType, unsigned int rows, unsigned int columns>
         Matrix <dataType, rows, columns>::~Matrix()
         {
@@ -88,7 +88,7 @@ namespace MatWiecz
         }
         
         template <typename dataType, unsigned int rows, unsigned int columns>
-        dataType &Matrix <dataType, rows, columns>::Elem(
+        dataType &Matrix <dataType, rows, columns>::operator()(
             unsigned int row, unsigned int column) const
         {
             if (row < rows & column < columns)
@@ -176,10 +176,10 @@ namespace MatWiecz
             for (unsigned int row = 0; row < m; row++)
                 for (unsigned int column = 0; column < p; column++)
                 {
-                    tempData[row*p+column] = (dataType)0;
+                    tempData[row * p + column] = (dataType) 0;
                     for (unsigned int comp = 0; comp < n; comp++)
-                        tempData[row*p+column] += aData[row*n+comp] *
-                            bData[comp*p+column];
+                        tempData[row * p + column] += aData[row * n + comp] *
+                                                      bData[comp * p + column];
                 }
             return Matrix <dataType, m, p>(MatrixOptions(0), tempData);
         }

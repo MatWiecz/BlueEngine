@@ -22,50 +22,55 @@ namespace MatWiecz
         class VectorClass
         {
             protected:
-            double components[3];
+            float * components;
+            bool outerData;
+            
+            void Init(float * data);
             
             public:
-            VectorClass();
+            VectorClass(float *data = nullptr);
             
-            VectorClass(double aComp, double bComp, double cComp);
+            VectorClass(float aComp, float bComp, float cComp,
+                        float *data = nullptr);
             
-            VectorClass(const Point &aPoint, const Point &bPoint);
+            VectorClass(const Point &aPoint, const Point &bPoint,
+                        float *data = nullptr);
             
-            ~VectorClass() = default;
+            ~VectorClass();
             
-            double A() const;
+            float A() const;
             
-            double B() const;
+            float B() const;
             
-            double C() const;
+            float C() const;
             
-            double VectorNorm() const;
+            float VectorNorm() const;
             
             Vector &Normalize();
             
             Vector VectorProduct(const Vector &vector) const;
             
-            double ScalarProduct(const Vector &vector) const;
+            float ScalarProduct(const Vector &vector) const;
             
-            Vector &IncreaseA(double delta);
+            Vector &IncreaseA(float delta);
             
-            Vector &IncreaseB(double delta);
+            Vector &IncreaseB(float delta);
             
-            Vector &IncreaseC(double delta);
+            Vector &IncreaseC(float delta);
             
-            Vector &ScaleX(double factor);
+            Vector &ScaleX(float factor);
             
-            Vector &ScaleY(double factor);
+            Vector &ScaleY(float factor);
             
-            Vector &ScaleZ(double factor);
+            Vector &ScaleZ(float factor);
             
-            Vector &RotX(double angle);
+            Vector &RotX(float angle);
             
-            Vector &RotY(double angle);
+            Vector &RotY(float angle);
             
-            Vector &RotZ(double angle);
+            Vector &RotZ(float angle);
             
-            Vector &RotVector(const Vector &vector, double angle);
+            Vector &RotVector(const Vector &vector, float angle);
         };
     
         const Vector operator+(const Vector &aVector,
@@ -76,14 +81,14 @@ namespace MatWiecz
     
         const Vector operator-(const Vector &vector);
     
-        const Vector operator*(const Vector &vector, double factor);
+        const Vector operator*(const Vector &vector, float factor);
     
-        const Vector operator*(double factor, const Vector &vector);
+        const Vector operator*(float factor, const Vector &vector);
     
         const Vector operator&(const Vector &aVector,
                                const Vector &bVector);
     
-        double operator*(const Vector &aVector,
+        float operator*(const Vector &aVector,
                          const Vector &bVector);
     }
 }
