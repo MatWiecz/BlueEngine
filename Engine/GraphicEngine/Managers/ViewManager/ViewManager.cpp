@@ -84,7 +84,7 @@ namespace MatWiecz
         }
         
         ViewManagerRetVal ViewManagerClass::UpdateProjection(
-            double aspect)
+            float aspect)
         {
             if (int(~status & ViewManagerCreated) || activeCameraId == 0)
                 return ViewManagerRetVal::InvalidOperation;

@@ -52,7 +52,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
             //                         ObjectTextured);
             camera.CreateCamera(worldOrigin, "Main camera", 10.0f, 10.0f,
                                 100.0f, 0.0f, 0.0f, 0.0f);
-            camera.SetUpPerspectiveCamera(45.0, 1.0, 1000000.0);
+            //camera.SetUpPerspectiveCamera(45.0, 1.0, 1000000.0f);
             camera.SetAngleFunction(CameraAngleFunction);
             tempCamera.CreateCamera(worldOrigin, "Temp camera", 10.0f, 10.0f,
                                     10.0f, 0.0f, 0.0f, 0.0f);

@@ -30,10 +30,10 @@ namespace MatWiecz
         {
             protected:
             CameraMode mode;
-            double shootingAngleParam;
-            double widthParam;
-            double zNearParam;
-            double zFarParam;
+            float shootingAngleParam;
+            float widthParam;
+            float zNearParam;
+            float zFarParam;
             
             public:
             CameraClass();
@@ -44,12 +44,12 @@ namespace MatWiecz
                 float xAngle, float yAngle, float zAngle);
             
             BaseObjectClassRetVal SetUpPerspectiveCamera(
-                double shootingAngle, double zNear, double zFar);
+                float shootingAngle, float zNear, float zFar);
             
             BaseObjectClassRetVal SetUpOrtographicCamera(
-                double width, double zNear, double zFar);
+                float width, float zNear, float zFar);
             
-            BaseObjectClassRetVal UpdateProjection(double aspect);
+            BaseObjectClassRetVal UpdateProjection(float aspect);
             
             BaseObjectClassRetVal PerformViewTransformation();
             

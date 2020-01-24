@@ -59,7 +59,7 @@ namespace MatWiecz
             
             ViewManagerRetVal UnregisterCamera(unsigned int cameraId);
             
-            ViewManagerRetVal UpdateProjection(double aspect);
+            ViewManagerRetVal UpdateProjection(float aspect);
             
             ViewManagerRetVal PerformViewTransformation();
             

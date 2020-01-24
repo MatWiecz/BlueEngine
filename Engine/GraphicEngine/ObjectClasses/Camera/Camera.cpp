@@ -9,10 +9,10 @@ namespace MatWiecz
     namespace BlueEngine
     {
         CameraClass::CameraClass(): mode(CameraMode::Perspective),
-                                    shootingAngleParam(90.0),
-                                    widthParam(0),
-                                    zNearParam(1.0),
-                                    zFarParam(1000.0)
+                                    shootingAngleParam(90.0f),
+                                    widthParam(0.0f),
+                                    zNearParam(1.0f),
+                                    zFarParam(1000.0f)
         {
         }
     
@@ -30,12 +30,12 @@ namespace MatWiecz
         }
         
         BaseObjectClassRetVal CameraClass::SetUpPerspectiveCamera(
-            double shootingAngle, double zNear, double zFar)
+            float shootingAngle, float zNear, float zFar)
         {
             if (!IsCreated())
                 return BaseObjectClassRetVal::InvalidOperation;
-            if (shootingAngle >= 180.0 || shootingAngle <= 0.0 || zNear <= 0.0
-                || zNear >= zFar)
+            if (shootingAngle >= 180.0f || shootingAngle <= 0.0f
+                || zNear <= 0.0f || zNear >= zFar)
                 return BaseObjectClassRetVal::InvalidArgument;
             shootingAngleParam = shootingAngle;
             zNearParam = zNear;
@@ -44,11 +44,11 @@ namespace MatWiecz
         }
         
         BaseObjectClassRetVal CameraClass::SetUpOrtographicCamera(
-            double width, double zNear, double zFar)
+            float width, float zNear, float zFar)
         {
             if (!IsCreated())
                 return BaseObjectClassRetVal::InvalidOperation;
-            if (width <= 0.0 || zNear <= 0.0 || zNear >= zFar)
+            if (width <= 0.0f || zNear <= 0.0f || zNear >= zFar)
                 return BaseObjectClassRetVal::InvalidArgument;
             widthParam = width;
             zNearParam = zNear;
@@ -57,7 +57,7 @@ namespace MatWiecz
         }
         
         BaseObjectClassRetVal CameraClass::UpdateProjection(
-            double aspect)
+            float aspect)
         {
             if (!IsCreated())
                 return BaseObjectClassRetVal::InvalidOperation;
@@ -70,8 +70,8 @@ namespace MatWiecz
                                    zFarParam);
                     break;
                 case CameraMode::Orthographic:
-                    double tempWidth = widthParam / 2.0;
-                    double tempHeight = (widthParam / aspect) / 2.0;
+                    float tempWidth = widthParam / 2.0f;
+                    float tempHeight = (widthParam / aspect) / 2.0f;
                     glOrtho(-tempWidth, tempWidth, -tempHeight, tempHeight,
                             zNearParam, zFarParam);
                     break;
