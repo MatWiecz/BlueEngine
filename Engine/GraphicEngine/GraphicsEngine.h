@@ -75,7 +75,7 @@ namespace MatWiecz
             
             GraphicsEngineRetVal Destroy();
         };
-    };
+    }
 }
 
 #endif //BLUEENGINE_GRAPHICSENGINE_H

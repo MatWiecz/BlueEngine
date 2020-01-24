@@ -137,7 +137,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     // tworzy okno
     hwnd = CreateWindowEx(NULL,									// rozszerzony styl okna
                           "MojaKlasa",							// nazwa klasy
-                          "Powierzchnie, przykład trzeci: powierzchnia Bezier pokryta teksturą",		// nazwa aplikacji
+                          "Research",		// nazwa aplikacji
                           dwStyle | WS_CLIPCHILDREN |
                           WS_CLIPSIBLINGS,
                           0, 0,								// współrzędne x,y
