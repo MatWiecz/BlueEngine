@@ -40,7 +40,7 @@ namespace MatWiecz
         }
         
         VectorClass::VectorClass(const Point &aPoint, const Point &bPoint,
-                                 float *data = nullptr)
+                                 float *data)
         {
             Init(data);
             components[0] = bPoint.X() - aPoint.X();

@@ -31,7 +31,7 @@ namespace MatWiecz
                 pos[0] = pos[1] = pos[2] = 0.0f;
         }
         
-        PointClass::PointClass(float xPos, float yPos, float zPos, float *data):
+        PointClass::PointClass(float xPos, float yPos, float zPos, float *data)
         {
             Init(data);
             pos[0] = xPos;
