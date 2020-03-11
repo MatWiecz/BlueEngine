@@ -22,10 +22,12 @@ namespace MatWiecz
                                  + pM(0, 2) * lM(2, 1);
             float inf = 1.0f / 0.0f;
             if (denominator == 0.0)
+            {
                 if (numerator == 0.0)
                     return Point(+inf, +inf, +inf);
                 else
                     return Point(-inf, -inf, -inf);
+            }
             float t = numerator / denominator;
             return Point(lM(0, 0)+lM(0, 1)*t,
                          lM(1, 0)+lM(1, 1)*t,

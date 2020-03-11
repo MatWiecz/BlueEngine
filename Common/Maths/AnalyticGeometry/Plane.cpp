@@ -9,14 +9,14 @@ namespace MatWiecz
     namespace BlueEngine
     {
         PlaneClass::PlaneClass(): mainPoint(0.0f, 0.0f, 0.0f),
-                                  normalVector(0.0f, 0.0f, 1.0f)
+                                  normalVector(0.0f, 1.0f, 0.0f)
         {
         }
         
         PlaneClass::PlaneClass(const Point &aPoint, const Point &bPoint,
-                               const Point &cPoint)
+                               const Point &cPoint):
+            mainPoint(aPoint)
         {
-            mainPoint = aPoint;
             Vector aVector(aPoint, bPoint);
             Vector bVector(aPoint, cPoint);
             normalVector = aVector.VectorProduct(bVector);
@@ -37,6 +37,69 @@ namespace MatWiecz
             normalVector(aVector.VectorProduct(bVector))
         {
             normalVector.Normalize();
+        }
+        
+        PlaneClass::PlaneClass(const PlaneClass &plane):
+            mainPoint(plane.mainPoint),
+            normalVector(plane.normalVector)
+        {
+        }
+        
+        PlaneClass::PlaneClass(float *pointData, float *vectorData):
+            mainPoint(pointData),
+            normalVector(vectorData)
+        {
+            normalVector.Normalize();
+        }
+        
+        PlaneClass::PlaneClass(const Point &aPoint,
+                               const Point &bPoint,
+                               const Point &cPoint,
+                               float *pointData, float *vectorData):
+            mainPoint(aPoint, pointData),
+            normalVector(vectorData)
+        {
+            Vector aVector(aPoint, bPoint);
+            Vector bVector(aPoint, cPoint);
+            normalVector = aVector.VectorProduct(bVector);
+            normalVector.Normalize();
+        }
+        
+        PlaneClass::PlaneClass(
+            const Point &planeMainPoint,
+            const Vector &planeNormalVector,
+            float *pointData, float *vectorData):
+            mainPoint(planeMainPoint, pointData),
+            normalVector(planeNormalVector, vectorData)
+        {
+            normalVector.Normalize();
+        }
+        
+        PlaneClass::PlaneClass(const Point &planePoint,
+                               const Vector &aVector,
+                               const Vector &bVector,
+                               float *pointData, float *vectorData):
+            mainPoint(planePoint, pointData),
+            normalVector(aVector.VectorProduct(bVector), vectorData)
+        {
+            normalVector.Normalize();
+        }
+        
+        PlaneClass::PlaneClass(const PlaneClass &plane, float *pointData,
+                               float *vectorData):
+            mainPoint(plane.mainPoint, pointData),
+            normalVector(plane.normalVector, vectorData)
+        {
+        }
+    
+        PlaneClass &PlaneClass::operator=(const PlaneClass &plane)
+        {
+            if(this != &plane)
+            {
+                mainPoint = plane.mainPoint;
+                normalVector = plane.normalVector;
+            }
+            return *this;
         }
         
         Point PlaneClass::MainPoint() const
@@ -98,7 +161,7 @@ namespace MatWiecz
             tempMatrix(0, 3) = -normalVector.A() * mainPoint.X()
                                - normalVector.B() * mainPoint.Y()
                                - normalVector.C() * mainPoint.Z();
-            return Matrix<float, 1, 4>(MatrixOptions(0), tempData);
+            return Matrix <float, 1, 4>(MatrixOptions(0), tempData);
         }
     }
 }

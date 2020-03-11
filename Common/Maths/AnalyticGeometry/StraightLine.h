@@ -36,6 +36,26 @@ namespace MatWiecz
             StraightLineClass(const Point &linePoint,
                               const Vector &lineDirectionVector);
             
+            StraightLineClass(const StraightLineClass &straightLine);
+            
+            StraightLineClass(float *pointData, float *vectorData);
+            
+            StraightLineClass(const Point &aPoint,
+                              const Point &bPoint,
+                              float *pointData,
+                              float *vectorData);
+            
+            StraightLineClass(const Point &linePoint,
+                              const Vector &lineDirectionVector,
+                              float *pointData,
+                              float *vectorData);
+            
+            StraightLineClass(const StraightLineClass &straightLine,
+                              float *pointData,
+                              float *vectorData);
+            
+            StraightLineClass &operator=(const StraightLineClass &straightLine);
+            
             Point MainPoint() const;
             
             Vector DirectionVector() const;
@@ -52,7 +72,7 @@ namespace MatWiecz
                                     const Vector &vector,
                                     float angle);
             
-            Matrix<float, 3, 2> GetParametricFormMatrix() const;
+            Matrix <float, 3, 2> GetParametricFormMatrix() const;
         };
     }
 }

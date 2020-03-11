@@ -9,14 +9,14 @@ namespace MatWiecz
     namespace BlueEngine
     {
         StraightLineClass::StraightLineClass(): mainPoint(0.0, 0.0, 0.0),
-                                                directionVector(0.0, 0.0, 1.0)
+                                                directionVector(0.0, 1.0, 0.0)
         {
         }
         
         StraightLineClass::StraightLineClass(const Point &aPoint,
                                              const Point &bPoint):
             mainPoint(aPoint),
-            directionVector(Vector(aPoint, bPoint))
+            directionVector(aPoint, bPoint)
         {
             directionVector.Normalize();
         }
@@ -27,6 +27,61 @@ namespace MatWiecz
             directionVector(lineDirectionVector)
         {
             directionVector.Normalize();
+        }
+        
+        StraightLineClass::StraightLineClass(
+            const StraightLineClass &straightLine):
+            mainPoint(straightLine.mainPoint),
+            directionVector(straightLine.directionVector)
+        {
+        }
+        
+        StraightLineClass::StraightLineClass(float *pointData,
+                                             float *vectorData):
+            mainPoint(pointData),
+            directionVector(vectorData)
+        {
+            directionVector.Normalize();
+        }
+        
+        StraightLineClass::StraightLineClass(const Point &aPoint,
+                                             const Point &bPoint,
+                                             float *pointData,
+                                             float *vectorData):
+            mainPoint(aPoint, pointData),
+            directionVector(aPoint, bPoint, vectorData)
+        {
+            directionVector.Normalize();
+        }
+        
+        StraightLineClass::StraightLineClass(const Point &linePoint,
+                                             const Vector &lineDirectionVector,
+                                             float *pointData,
+                                             float *vectorData):
+            mainPoint(linePoint, pointData),
+            directionVector(lineDirectionVector, vectorData)
+        {
+            directionVector.Normalize();
+        }
+        
+        StraightLineClass::StraightLineClass(
+            const StraightLineClass &straightLine,
+            float *pointData,
+            float *vectorData):
+            mainPoint(straightLine.mainPoint, pointData),
+            directionVector(straightLine.directionVector, vectorData)
+        {
+        }
+    
+        StraightLineClass &StraightLineClass::operator=(
+            const StraightLineClass &straightLine)
+        {
+            if(this != &straightLine)
+            {
+                mainPoint = straightLine.mainPoint;
+                directionVector = straightLine.directionVector;
+            }
+            return *this;
         }
         
         Point StraightLineClass::MainPoint() const

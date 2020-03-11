@@ -26,8 +26,11 @@ namespace MatWiecz
         VectorClass::VectorClass(float *data)
         {
             Init(data);
-            if(!outerData)
-                components[0] = components[1] = components[2] = 0.0f;
+            if (!outerData)
+            {
+                components[0] = components[2] = 0.0f;
+                components[1] = 1.0f;
+            }
         }
         
         VectorClass::VectorClass(float aComp, float bComp, float cComp,
@@ -47,11 +50,38 @@ namespace MatWiecz
             components[1] = bPoint.Y() - aPoint.Y();
             components[2] = bPoint.Z() - aPoint.Z();
         }
-    
+        
+        VectorClass::VectorClass(const VectorClass &vector)
+        {
+            Init(nullptr);
+            components[0] = vector.A();
+            components[1] = vector.B();
+            components[2] = vector.C();
+        }
+        
+        VectorClass::VectorClass(const VectorClass &vector, float *data)
+        {
+            Init(data);
+            components[0] = vector.A();
+            components[1] = vector.B();
+            components[2] = vector.C();
+        }
+        
         VectorClass::~VectorClass()
         {
-            if(!outerData)
-                delete [] components;
+            if (!outerData)
+                delete[] components;
+        }
+        
+        VectorClass &VectorClass::operator=(const VectorClass &vector)
+        {
+            if (this != &vector)
+            {
+                components[0] = vector.A();
+                components[1] = vector.B();
+                components[2] = vector.C();
+            }
+            return *this;
         }
         
         float VectorClass::A() const
@@ -78,7 +108,7 @@ namespace MatWiecz
         
         float VectorClass::ScalarProduct(const Vector &vector) const
         {
-            return A()*vector.A()+B()*vector.B()+C()*vector.C();
+            return A() * vector.A() + B() * vector.B() + C() * vector.C();
         }
         
         Vector &VectorClass::IncreaseA(float delta)
@@ -107,13 +137,12 @@ namespace MatWiecz
         Vector &VectorClass::Normalize()
         {
             float vectorNorm = VectorNorm();
-            Vector normalizedVector = *this;
             if (vectorNorm == 0.0f)
-                return normalizedVector;
-            normalizedVector.components[0] /= vectorNorm;
-            normalizedVector.components[1] /= vectorNorm;
-            normalizedVector.components[2] /= vectorNorm;
-            return normalizedVector;
+                return *this;
+            components[0] /= vectorNorm;
+            components[1] /= vectorNorm;
+            components[2] /= vectorNorm;
+            return *this;
         }
         
         Vector &VectorClass::ScaleX(float factor)
@@ -178,7 +207,7 @@ namespace MatWiecz
                           aVector.B() + bVector.B(),
                           aVector.C() + bVector.C());
         }
-    
+        
         const Vector operator-(const Vector &aVector,
                                const Vector &bVector)
         {
@@ -186,32 +215,32 @@ namespace MatWiecz
                           aVector.B() - bVector.B(),
                           aVector.C() - bVector.C());
         }
-    
+        
         const Vector operator-(const Vector &vector)
         {
             return Vector(-vector.A(), -vector.B(), -vector.C());
         }
-    
+        
         const Vector operator*(const Vector &vector, float factor)
         {
-            return Vector(factor*vector.A(),
-                          factor*vector.B(),
-                          factor*vector.C());
+            return Vector(factor * vector.A(),
+                          factor * vector.B(),
+                          factor * vector.C());
         }
-    
+        
         const Vector operator*(float factor, const Vector &vector)
         {
-            return vector*factor;
+            return vector * factor;
         }
-    
+        
         const Vector operator&(const Vector &aVector,
                                const Vector &bVector)
         {
             return Vector(aVector.VectorProduct(bVector));
         }
-    
+        
         float operator*(const Vector &aVector,
-                         const Vector &bVector)
+                        const Vector &bVector)
         {
             return aVector.ScalarProduct(bVector);
         }

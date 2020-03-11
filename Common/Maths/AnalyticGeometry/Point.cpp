@@ -39,10 +39,37 @@ namespace MatWiecz
             pos[2] = zPos;
         }
         
+        PointClass::PointClass(const PointClass & point)
+        {
+            Init(nullptr);
+            pos[0] = point.X();
+            pos[1] = point.Y();
+            pos[2] = point.Z();
+        }
+        
+        PointClass::PointClass(const PointClass & point, float *data)
+        {
+            Init(data);
+            pos[0] = point.X();
+            pos[1] = point.Y();
+            pos[2] = point.Z();
+        }
+        
         PointClass::~PointClass()
         {
             if (!outerData)
                 delete[] pos;
+        }
+    
+        PointClass &PointClass::operator=(const PointClass & point)
+        {
+            if(this != &point)
+            {
+                pos[0] = point.X();
+                pos[1] = point.Y();
+                pos[2] = point.Z();
+            }
+            return *this;
         }
         
         float PointClass::X() const

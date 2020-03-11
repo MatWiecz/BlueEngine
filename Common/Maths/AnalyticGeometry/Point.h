@@ -33,7 +33,13 @@ namespace MatWiecz
             PointClass(float xPos, float yPos, float zPos,
                        float *data = nullptr);
             
+            PointClass(const PointClass & point);
+            
+            PointClass(const PointClass & point, float *data);
+            
             ~PointClass();
+            
+            PointClass &operator=(const PointClass & point);
             
             float X() const;
             

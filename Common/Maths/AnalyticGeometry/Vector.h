@@ -22,10 +22,10 @@ namespace MatWiecz
         class VectorClass
         {
             protected:
-            float * components;
+            float *components;
             bool outerData;
             
-            void Init(float * data);
+            void Init(float *data);
             
             public:
             VectorClass(float *data = nullptr);
@@ -36,7 +36,13 @@ namespace MatWiecz
             VectorClass(const Point &aPoint, const Point &bPoint,
                         float *data = nullptr);
             
+            VectorClass(const VectorClass &vector);
+            
+            VectorClass(const VectorClass &vector, float *data);
+            
             ~VectorClass();
+            
+            VectorClass &operator=(const VectorClass &vector);
             
             float A() const;
             
@@ -72,24 +78,24 @@ namespace MatWiecz
             
             Vector &RotVector(const Vector &vector, float angle);
         };
-    
+        
         const Vector operator+(const Vector &aVector,
                                const Vector &bVector);
-    
+        
         const Vector operator-(const Vector &aVector,
                                const Vector &bVector);
-    
+        
         const Vector operator-(const Vector &vector);
-    
+        
         const Vector operator*(const Vector &vector, float factor);
-    
+        
         const Vector operator*(float factor, const Vector &vector);
-    
+        
         const Vector operator&(const Vector &aVector,
                                const Vector &bVector);
-    
+        
         float operator*(const Vector &aVector,
-                         const Vector &bVector);
+                        const Vector &bVector);
     }
 }
 

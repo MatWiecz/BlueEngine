@@ -41,6 +41,34 @@ namespace MatWiecz
                        const Vector &aVector,
                        const Vector &bVector);
             
+            PlaneClass(const PlaneClass &plane);
+            
+            PlaneClass(float *pointData,
+                       float *vectorData);
+            
+            PlaneClass(const Point &aPoint,
+                       const Point &bPoint,
+                       const Point &cPoint,
+                       float *pointData,
+                       float *vectorData);
+            
+            PlaneClass(const Point &planeMainPoint,
+                       const Vector &planeNormalVector,
+                       float *pointData,
+                       float *vectorData);
+            
+            PlaneClass(const Point &planePoint,
+                       const Vector &aVector,
+                       const Vector &bVector,
+                       float *pointData,
+                       float *vectorData);
+            
+            PlaneClass(const PlaneClass &plane,
+                       float *pointData,
+                       float *vectorData);
+            
+            PlaneClass &operator=(const PlaneClass &plane);
+            
             Point MainPoint() const;
             
             Vector NormalVector() const;
@@ -59,7 +87,7 @@ namespace MatWiecz
                              const Vector &vector,
                              float angle);
             
-            Matrix<float, 1, 4> GetGeneralFormMatrix() const;
+            Matrix <float, 1, 4> GetGeneralFormMatrix() const;
         };
     };
 }
