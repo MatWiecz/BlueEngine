@@ -41,6 +41,8 @@ namespace MatWiecz
             
             PointClass &operator=(const PointClass & point);
             
+            float * GetData() const;
+            
             float X() const;
             
             float Y() const;

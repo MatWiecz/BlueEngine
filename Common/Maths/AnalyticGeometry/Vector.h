@@ -43,6 +43,8 @@ namespace MatWiecz
             ~VectorClass();
             
             VectorClass &operator=(const VectorClass &vector);
+    
+            float * GetData() const;
             
             float A() const;
             

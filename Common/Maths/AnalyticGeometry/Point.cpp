@@ -5,6 +5,7 @@
 #include <cmath>
 #include "Point.h"
 #include "../Matrices/Matrix.hpp"
+#include "Common.h"
 
 namespace MatWiecz
 {
@@ -12,7 +13,7 @@ namespace MatWiecz
     {
         void PointClass::Init(float *data)
         {
-            if (data != nullptr)
+            if (data != nullptr && data != UseObjectData)
             {
                 pos = data;
                 outerData = true;
@@ -39,7 +40,7 @@ namespace MatWiecz
             pos[2] = zPos;
         }
         
-        PointClass::PointClass(const PointClass & point)
+        PointClass::PointClass(const PointClass &point)
         {
             Init(nullptr);
             pos[0] = point.X();
@@ -47,7 +48,7 @@ namespace MatWiecz
             pos[2] = point.Z();
         }
         
-        PointClass::PointClass(const PointClass & point, float *data)
+        PointClass::PointClass(const PointClass &point, float *data)
         {
             Init(data);
             pos[0] = point.X();
@@ -60,16 +61,21 @@ namespace MatWiecz
             if (!outerData)
                 delete[] pos;
         }
-    
-        PointClass &PointClass::operator=(const PointClass & point)
+        
+        PointClass &PointClass::operator=(const PointClass &point)
         {
-            if(this != &point)
+            if (this != &point)
             {
                 pos[0] = point.X();
                 pos[1] = point.Y();
                 pos[2] = point.Z();
             }
             return *this;
+        }
+        
+        float *PointClass::GetData() const
+        {
+            return pos;
         }
         
         float PointClass::X() const

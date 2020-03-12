@@ -3,6 +3,7 @@
 //
 
 #include "Plane.h"
+#include "Common.h"
 
 namespace MatWiecz
 {
@@ -69,8 +70,12 @@ namespace MatWiecz
             const Point &planeMainPoint,
             const Vector &planeNormalVector,
             float *pointData, float *vectorData):
-            mainPoint(planeMainPoint, pointData),
-            normalVector(planeNormalVector, vectorData)
+            mainPoint(planeMainPoint, (pointData == UseObjectData)
+                                      ? planeMainPoint.GetData()
+                                      : pointData),
+            normalVector(planeNormalVector, (vectorData == UseObjectData)
+                                            ? planeNormalVector.GetData()
+                                            : vectorData)
         {
             normalVector.Normalize();
         }
@@ -79,7 +84,9 @@ namespace MatWiecz
                                const Vector &aVector,
                                const Vector &bVector,
                                float *pointData, float *vectorData):
-            mainPoint(planePoint, pointData),
+            mainPoint(planePoint, (pointData == UseObjectData)
+                                  ? planePoint.GetData()
+                                  : pointData),
             normalVector(aVector.VectorProduct(bVector), vectorData)
         {
             normalVector.Normalize();
@@ -87,14 +94,18 @@ namespace MatWiecz
         
         PlaneClass::PlaneClass(const PlaneClass &plane, float *pointData,
                                float *vectorData):
-            mainPoint(plane.mainPoint, pointData),
-            normalVector(plane.normalVector, vectorData)
+            mainPoint(plane.mainPoint, (pointData == UseObjectData)
+                                       ? plane.mainPoint.GetData()
+                                       : pointData),
+            normalVector(plane.normalVector, (vectorData == UseObjectData)
+                                             ? plane.normalVector.GetData()
+                                             : vectorData)
         {
         }
-    
+        
         PlaneClass &PlaneClass::operator=(const PlaneClass &plane)
         {
-            if(this != &plane)
+            if (this != &plane)
             {
                 mainPoint = plane.mainPoint;
                 normalVector = plane.normalVector;

@@ -4,6 +4,7 @@
 
 #include <cmath>
 #include "Vector.h"
+#include "Common.h"
 
 namespace MatWiecz
 {
@@ -11,7 +12,7 @@ namespace MatWiecz
     {
         void VectorClass::Init(float *data)
         {
-            if (data != nullptr)
+            if (data != nullptr && data != UseObjectData)
             {
                 components = data;
                 outerData = true;
@@ -82,6 +83,11 @@ namespace MatWiecz
                 components[2] = vector.C();
             }
             return *this;
+        }
+        
+        float *VectorClass::GetData() const
+        {
+            return components;
         }
         
         float VectorClass::A() const
