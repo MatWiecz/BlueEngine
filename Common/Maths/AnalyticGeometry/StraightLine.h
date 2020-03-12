@@ -13,6 +13,7 @@ namespace MatWiecz
     }
 }
 
+#include <string>
 #include "Point.h"
 #include "Vector.h"
 #include "../Matrices/Matrix.hpp"
@@ -73,6 +74,8 @@ namespace MatWiecz
                                     float angle);
             
             Matrix <float, 3, 2> GetParametricFormMatrix() const;
+    
+            operator std::string () const;
         };
     }
 }

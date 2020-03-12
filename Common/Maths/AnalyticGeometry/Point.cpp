@@ -2,9 +2,7 @@
 // Created by Mateusz on 2019-10-02.
 //
 
-#include <cmath>
 #include "Point.h"
-#include "../Matrices/Matrix.hpp"
 
 namespace MatWiecz
 {
@@ -39,7 +37,7 @@ namespace MatWiecz
             pos[2] = zPos;
         }
         
-        PointClass::PointClass(const PointClass & point)
+        PointClass::PointClass(const PointClass &point)
         {
             Init(nullptr);
             pos[0] = point.X();
@@ -47,7 +45,7 @@ namespace MatWiecz
             pos[2] = point.Z();
         }
         
-        PointClass::PointClass(const PointClass & point, float *data)
+        PointClass::PointClass(const PointClass &point, float *data)
         {
             Init(data);
             pos[0] = point.X();
@@ -60,10 +58,10 @@ namespace MatWiecz
             if (!outerData)
                 delete[] pos;
         }
-    
-        PointClass &PointClass::operator=(const PointClass & point)
+        
+        PointClass &PointClass::operator=(const PointClass &point)
         {
-            if(this != &point)
+            if (this != &point)
             {
                 pos[0] = point.X();
                 pos[1] = point.Y();
@@ -147,6 +145,14 @@ namespace MatWiecz
             posMatrix = rotMatrix * posMatrix;
             TransX(point.X()).TransY(point.Y()).TransZ(point.Z());
             return *this;
+        }
+        
+        PointClass::operator std::string() const
+        {
+            return std::string("Point(")
+                   + std::to_string(X()) + ";"
+                   + std::to_string(Y()) + ";"
+                   + std::to_string(Z()) + ")";
         }
     }
 }

@@ -163,5 +163,12 @@ namespace MatWiecz
                                - normalVector.C() * mainPoint.Z();
             return Matrix <float, 1, 4>(MatrixOptions(0), tempData);
         }
+    
+        PlaneClass::operator std::string() const
+        {
+            return std::string("Plane{")
+                   + std::string(mainPoint) + ";"
+                   + std::string(normalVector) + "}";
+        }
     }
 }

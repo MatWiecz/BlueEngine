@@ -2,7 +2,6 @@
 // Created by Mateusz on 2019-10-02.
 //
 
-#include <cmath>
 #include "Vector.h"
 
 namespace MatWiecz
@@ -198,6 +197,14 @@ namespace MatWiecz
             components[1] = vectorEnd.Y();
             components[2] = vectorEnd.Z();
             return *this;
+        }
+    
+        VectorClass::operator std::string() const
+        {
+            return std::string("Vector[")
+                   + std::to_string(A()) + ";"
+                   + std::to_string(B()) + ";"
+                   + std::to_string(C()) + "]";
         }
         
         const Vector operator+(const Vector &aVector,

@@ -13,6 +13,7 @@ namespace MatWiecz
     }
 }
 
+#include <string>
 #include "Point.h"
 #include "Vector.h"
 #include "../Matrices/Matrix.hpp"
@@ -88,8 +89,10 @@ namespace MatWiecz
                              float angle);
             
             Matrix <float, 1, 4> GetGeneralFormMatrix() const;
+    
+            operator std::string () const;
         };
-    };
+    }
 }
 
 #endif //BLUEENGINE_PLANE_H

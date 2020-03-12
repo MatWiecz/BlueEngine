@@ -139,5 +139,12 @@ namespace MatWiecz
             tempMatrix(2, 1) = directionVector.C();
             return Matrix <float, 3, 2>(MatrixOptions(0), tempData);
         }
+    
+        StraightLineClass::operator std::string() const
+        {
+            return std::string("StraightLine{")
+                   + std::string(mainPoint) + ";"
+                   + std::string(directionVector) + "}";
+        }
     }
 }

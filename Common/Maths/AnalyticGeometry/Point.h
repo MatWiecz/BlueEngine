@@ -13,6 +13,9 @@ namespace MatWiecz
     }
 }
 
+#include <cmath>
+#include <string>
+#include "../Matrices/Matrix.hpp"
 #include "Vector.h"
 
 namespace MatWiecz
@@ -60,6 +63,8 @@ namespace MatWiecz
             Point &RotVector(const Point &point,
                              const Vector &vector,
                              float angle);
+            
+            operator std::string () const;
         };
     }
 }
