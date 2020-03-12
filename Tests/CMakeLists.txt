@@ -4,3 +4,4 @@ project(BlueEngineTests)
 set(CMAKE_CXX_STANDARD 11)
 
 add_subdirectory(Research)
+add_subdirectory(Classes)
