@@ -9,7 +9,7 @@ namespace MatWiecz
 {
     namespace BlueEngine
     {
-        static const float *UseObjectData = (float *) -1;
+        static  float *UseObjectData = (float *) -1;
     }
 }
 

@@ -12,8 +12,9 @@ int main()
     cout << string(a) << endl;
     cout << string(b) << endl;
     cout << string(ab) << endl;
-    ab.RotVector(Vector(0,0,1), 180);
+    ab.RotVector(Vector(0,0,1), M_PI / 2);
     cout << string(ab) << endl;
+    Plane planeA(a, ab, UseObjectData, UseObjectData);
     ab.Normalize();
     cout << string(ab) << endl;
     return 0;

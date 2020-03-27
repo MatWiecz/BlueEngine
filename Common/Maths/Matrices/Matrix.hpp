@@ -33,6 +33,9 @@ namespace MatWiecz
             
             ~Matrix();
             
+            Matrix <dataType, rows, columns> &operator=(
+                const Matrix <dataType, rows, columns> &matrix);
+            
             void SetMatrix(
                 MatrixOptions newOptions, dataType *sourceData = nullptr);
             
@@ -59,6 +62,17 @@ namespace MatWiecz
         {
             if (int(~options & UseSourceArray))
                 delete[]data;
+        }
+        
+        template <typename dataType, unsigned int rows, unsigned int columns>
+        Matrix <dataType, rows, columns> &
+        Matrix <dataType, rows, columns>::operator=(
+            const MatWiecz::BlueEngine::Matrix <dataType, rows,
+                                                columns> &matrix)
+        {
+            for (unsigned int i = 0; i < rows * columns; i++)
+                data[i] = matrix.data[i];
+            return *this;
         }
         
         template <typename dataType, unsigned int rows, unsigned int columns>
