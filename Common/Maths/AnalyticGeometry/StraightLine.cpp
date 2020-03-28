@@ -3,6 +3,7 @@
 //
 
 #include "StraightLine.h"
+#include "Common.h"
 
 namespace MatWiecz
 {
@@ -58,8 +59,12 @@ namespace MatWiecz
                                              const Vector &lineDirectionVector,
                                              float *pointData,
                                              float *vectorData):
-            mainPoint(linePoint, pointData),
-            directionVector(lineDirectionVector, vectorData)
+            mainPoint(linePoint, (pointData == UseObjectData)
+                                 ? linePoint.GetData()
+                                 : pointData),
+            directionVector(lineDirectionVector, (vectorData == UseObjectData)
+                                                 ? lineDirectionVector.GetData()
+                                                 : vectorData)
         {
             directionVector.Normalize();
         }
@@ -68,15 +73,20 @@ namespace MatWiecz
             const StraightLineClass &straightLine,
             float *pointData,
             float *vectorData):
-            mainPoint(straightLine.mainPoint, pointData),
-            directionVector(straightLine.directionVector, vectorData)
+            mainPoint(straightLine.mainPoint, (pointData == UseObjectData)
+                                              ? straightLine.mainPoint.GetData()
+                                              : pointData),
+            directionVector(straightLine.directionVector,
+                            (vectorData == UseObjectData)
+                            ? straightLine.directionVector.GetData()
+                            : vectorData)
         {
         }
-    
+        
         StraightLineClass &StraightLineClass::operator=(
             const StraightLineClass &straightLine)
         {
-            if(this != &straightLine)
+            if (this != &straightLine)
             {
                 mainPoint = straightLine.mainPoint;
                 directionVector = straightLine.directionVector;
