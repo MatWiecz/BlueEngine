@@ -69,4 +69,12 @@ add_compile_options("-static-libgcc")
 add_library(BlueEngine SHARED ${SOURCE_FILES})
 target_link_libraries(BlueEngine opengl32 glu32)
 
+add_custom_command(TARGET BlueEngine POST_BUILD
+        COMMAND COPY /Y libBlueEngine.dll
+        Tests\\Research\\libBlueEngine.dll
+        COMMAND COPY /Y libBlueEngine.dll
+        Tests\\Classes\\Common\\Maths\\AnalyticGeometry\\libBlueEngine.dll
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+        COMMENT "Updating .dll files...")
+
 add_subdirectory(Tests)
