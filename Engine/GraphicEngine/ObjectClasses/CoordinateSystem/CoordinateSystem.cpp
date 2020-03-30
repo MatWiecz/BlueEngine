@@ -24,31 +24,6 @@ namespace MatWiecz
         {
         }
         
-        CoordinateSystem &CoordinateSystemClass::CreateOrigin(
-            std::string objectName)
-        {
-            if (int(flags & ObjectCreated))
-                return *this;
-            id = nextId++;
-            name = objectName;
-            pos[0] = 0.0f;
-            pos[1] = 0.0f;
-            pos[2] = 0.0f;
-            angle[0] = 0.0f;
-            angle[2] = 0.0f;
-            angle[2] = 0.0f;
-            scale[0] = 1.0f;
-            scale[1] = 1.0f;
-            scale[2] = 1.0f;
-            posFunction = nullptr;
-            angleFunction = nullptr;
-            scaleFunction = nullptr;
-            objectFunction = CoordinateSystem::DrawFunction;
-            flags |= ObjectCreated | ObjectVisible | ObjectShowPoints |
-                     ObjectShowEdges | ObjectShowFaces;
-            return *this;
-        }
-        
         CoordinateSystem &CoordinateSystemClass::CreateCoordinateSystem(
             BaseObjectClass *parentObject, std::string objectName)
         {
@@ -58,7 +33,7 @@ namespace MatWiecz
             return *this;
         }
         
-        CoordinateSystem &CoordinateSystem::SetAxisLength(float axisLength)
+        CoordinateSystem &CoordinateSystemClass::SetAxisLength(float axisLength)
         {
             length = axisLength;
             return *this;

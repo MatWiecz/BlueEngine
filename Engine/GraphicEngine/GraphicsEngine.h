@@ -24,6 +24,7 @@ namespace MatWiecz
 #include "Managers/ViewManager/ViewManager.h"
 #include "ObjectClasses/CoordinateSystem/CoordinateSystem.h"
 #include "../../VideoOutputWindow/VideoOutputWindow.h"
+#include "ObjectClasses/CoordinateSystem/WorldOrigin/WorldOrigin.h"
 
 namespace MatWiecz
 {
@@ -42,7 +43,7 @@ namespace MatWiecz
             GraphicsEngineStatus status;
             VideoOutputWindow * videoOutputWindow;
             ViewManager *viewManager;
-            CoordinateSystem *origin;
+            WorldOrigin *origin;
             GLclampf defaultColorValues [4];
             
             
@@ -67,7 +68,7 @@ namespace MatWiecz
     
             GraphicsEngineRetVal Start();
             
-            CoordinateSystem *GetOrigin();
+            WorldOrigin *GetWorldOrigin();
             
             GraphicsEngineRetVal DrawScene();
     

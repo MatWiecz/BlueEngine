@@ -31,7 +31,7 @@ namespace MatWiecz
             AdvancedCoordinateSystem & CreateAdvancedCoordinateSystem(
                 BaseObjectClass *parentObject, std::string objectName);
     
-            AdvancedCoordinateSystem & ShowValues(bool on);
+            AdvancedCoordinateSystem & SetShowValuesMode(bool on);
     
             static void DrawFunction(const BaseObjectClass & object);
         };

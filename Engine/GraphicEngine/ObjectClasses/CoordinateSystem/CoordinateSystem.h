@@ -30,8 +30,6 @@ namespace MatWiecz
             public:
             
             CoordinateSystemClass();
-    
-            CoordinateSystem & CreateOrigin(std::string objectName);
             
             CoordinateSystem &CreateCoordinateSystem(
                 BaseObjectClass *parentObject, std::string objectName);

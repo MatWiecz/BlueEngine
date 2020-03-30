@@ -18,7 +18,7 @@ ViewManager viewManager;
 Camera camera;
 Camera tempCamera;
 unsigned int cameraId;
-CoordinateSystem *worldOrigin;
+WorldOrigin *worldOrigin;
 AdvancedCoordinateSystem extraCoordinateSystem;
 Matrix <float, 4, 2> aMatrix;
 Matrix <float, 2, 3> bMatrix;
@@ -47,18 +47,20 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
             blueEngine.Create();
             blueEngine.SetGraphicsEngine(&graphicsEngine);
             blueEngine.Start();
-            worldOrigin = graphicsEngine.GetOrigin();
-            //worldOrigin->UpdateFlags(BaseObjectClassUpdateFlagsMode::SetFlags,
-            //                         ObjectTextured);
-            camera.CreateCamera(worldOrigin, "Main camera").SetXPos(10)
-                  .SetYPos(10).SetZPos(100).SetAngleFunction(CameraAngleFunction);
+            worldOrigin = graphicsEngine.GetWorldOrigin();
+            worldOrigin->UpdateFlags(UpdateFlagsMode::SetFlags,
+                                     ObjectTextured | ObjectVisible |
+                                     ObjectShowEdges);
+            camera.CreateCamera(worldOrigin, "Main camera").SetPos(
+                10,10,100).SetAngleFunction(CameraAngleFunction);
             //camera.SetUpPerspectiveCamera(45.0, 1.0, 1000000.0f);
-            tempCamera.CreateCamera(worldOrigin, "Temp camera").SetXPos(10)
-                      .SetYPos(10).SetZPos(10);
+            tempCamera.CreateCamera(worldOrigin, "Temp camera").SetPos(
+                10,10,10);
             viewManager.RegisterCamera(&camera, &cameraId);
             viewManager.ActivateCamera(cameraId);
             extraCoordinateSystem.CreateAdvancedCoordinateSystem(
-                worldOrigin, "Extra");
+                worldOrigin, "Extra").SetPos(1,1,1).UpdateFlags
+                (UpdateFlagsMode::UnsetFlags, ObjectVisible);
             return 0;
         
         case WM_CLOSE:

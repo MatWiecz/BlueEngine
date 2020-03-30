@@ -87,13 +87,13 @@ namespace MatWiecz
             glClearColor(defaultColorValues[0], defaultColorValues[1],
                          defaultColorValues[2], defaultColorValues[3]);
             glEnable(GL_DEPTH_TEST);
-            origin = new CoordinateSystem();
-            origin->CreateOrigin("Root object");
+            origin = new WorldOrigin();
+            origin->CreateWorldOrigin("Root object");
             status |= GraphicsEngineWorking;
             return GraphicsEngineRetVal::Success;
         }
         
-        CoordinateSystem *GraphicsEngineClass::GetOrigin()
+        WorldOrigin *GraphicsEngineClass::GetWorldOrigin()
         {
             return origin;
         }

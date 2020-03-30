@@ -108,7 +108,7 @@ namespace MatWiecz
         }
         
         BaseObjectClass &
-        BaseObjectClassClass::UpdateFlags(BaseObjectClassUpdateFlagsMode mode,
+        BaseObjectClassClass::UpdateFlags(UpdateFlagsMode mode,
                                           BaseObjectClassFlags flagsMask,
                                           bool recursively)
         {
@@ -120,13 +120,13 @@ namespace MatWiecz
             flagsMask &= ~ObjectCreated;
             switch (mode)
             {
-                case BaseObjectClassUpdateFlagsMode::SetFlags:
+                case UpdateFlagsMode::SetFlags:
                     flags |= flagsMask;
                     break;
-                case BaseObjectClassUpdateFlagsMode::UnsetFlags:
+                case UpdateFlagsMode::UnsetFlags:
                     flags &= ~flagsMask;
                     break;
-                case BaseObjectClassUpdateFlagsMode::ToggleFlags:
+                case UpdateFlagsMode::ToggleFlags:
                     flags ^= flagsMask;
                     break;
             }

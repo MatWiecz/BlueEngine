@@ -16,12 +16,12 @@ namespace MatWiecz
             InvalidOperation
         } BaseObjectClassRetVal;
         
-        typedef enum class BaseObjectClassUpdateFlagsModeEnum
+        typedef enum class UpdateFlagsModeEnum
         {
             SetFlags,
             UnsetFlags,
             ToggleFlags
-        } BaseObjectClassUpdateFlagsMode;
+        } UpdateFlagsMode;
         
         typedef enum class TransformationOrderModeEnum
         {
@@ -114,7 +114,7 @@ namespace MatWiecz
             const std::map <unsigned int, BaseObjectClass *> &GetChildren();
     
             BaseObjectClass &
-            UpdateFlags(BaseObjectClassUpdateFlagsMode mode,
+            UpdateFlags(UpdateFlagsMode mode,
                         BaseObjectClassFlags flagsMask,
                         bool recursively = false);
     

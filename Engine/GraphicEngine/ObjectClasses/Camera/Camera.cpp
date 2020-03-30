@@ -17,7 +17,7 @@ namespace MatWiecz
         {
             Create(parentObject, objectName);
             mode = CameraMode::Perspective;
-            shootingAngleParam = 90.0f;
+            shootingAngleParam = 45.0f;
             widthParam = 0.0f;
             zNearParam = 1.0f;
             zFarParam = 1000.0f;

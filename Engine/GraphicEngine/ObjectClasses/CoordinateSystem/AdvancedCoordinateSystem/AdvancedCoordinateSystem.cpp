@@ -23,7 +23,8 @@ namespace MatWiecz
             return *this;
         }
         
-        AdvancedCoordinateSystem &AdvancedCoordinateSystem::ShowValues(bool on)
+        AdvancedCoordinateSystem &
+        AdvancedCoordinateSystemClass::SetShowValuesMode(bool on)
         {
             showValues = on;
             return *this;

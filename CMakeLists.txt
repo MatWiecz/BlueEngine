@@ -61,7 +61,7 @@ set(SOURCE_FILES
 
         Common/Maths/AnalyticGeometry/Common.h
 
-        Common/Maths/AnalyticGeometry/AnalyticGeometryHeaders.h)
+        Common/Maths/AnalyticGeometry/AnalyticGeometryHeaders.h Engine/GraphicEngine/ObjectClasses/CoordinateSystem/WorldOrigin/WorldOrigin.cpp Engine/GraphicEngine/ObjectClasses/CoordinateSystem/WorldOrigin/WorldOrigin.h)
 
 add_compile_options("-static-libstdc++")
 add_compile_options("-static-libgcc")
