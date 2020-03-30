@@ -102,16 +102,8 @@ namespace MatWiecz
             
             ~BaseObjectClassClass();
             
-            virtual BaseObjectClassRetVal Create(BaseObjectClass *parentObject,
-                                                 std::string objectName,
-                                                 float xPos, float yPos,
-                                                 float zPos,
-                                                 float xAngle, float yAngle,
-                                                 float zAngle,
-                                                 float xScale, float yScale,
-                                                 float zScale,
-                                                 TransformationOrderMode transformationOrderMode =
-                                                 TransformationOrderMode::TRS);
+            virtual BaseObjectClass & Create(BaseObjectClass *parentObject,
+                                                 std::string objectName);
             
             bool IsCreated();
             
@@ -120,32 +112,50 @@ namespace MatWiecz
             BaseObjectClass *GetParent();
             
             const std::map <unsigned int, BaseObjectClass *> &GetChildren();
-            
-            BaseObjectClassRetVal
+    
+            BaseObjectClass &
             UpdateFlags(BaseObjectClassUpdateFlagsMode mode,
                         BaseObjectClassFlags flagsMask,
                         bool recursively = false);
-            
-            BaseObjectClassRetVal SetObjectFunction(ObjectFunction
+    
+            BaseObjectClass & SetObjectFunction(ObjectFunction
                                                     newObjectFunction);
-            
-            BaseObjectClassRetVal SetPos(float xPos, float yPos, float zPos);
-            
-            BaseObjectClassRetVal SetPosFunction(PosFunction newPosFunction);
-            
-            BaseObjectClassRetVal SetAngle(float xAngle, float yAngle,
+    
+            BaseObjectClass & SetPos(float xPos, float yPos, float zPos);
+    
+            BaseObjectClass & SetXPos(float xPos);
+    
+            BaseObjectClass & SetYPos(float yPos);
+    
+            BaseObjectClass & SetZPos(float zPos);
+    
+            BaseObjectClass & SetPosFunction(PosFunction newPosFunction);
+    
+            BaseObjectClass & SetAngle(float xAngle, float yAngle,
                                            float zAngle);
-            
-            BaseObjectClassRetVal SetAngleFunction(AngleFunction
+    
+            BaseObjectClass & SetXAngle(float xAngle);
+    
+            BaseObjectClass & SetYAngle(float yAngle);
+    
+            BaseObjectClass & SetZAngle(float zAngle);
+    
+            BaseObjectClass & SetAngleFunction(AngleFunction
                                                    newAngleFunction);
-            
-            BaseObjectClassRetVal SetScale(float xScale, float yScale,
+    
+            BaseObjectClass & SetScale(float xScale, float yScale,
                                            float zScale);
-            
-            BaseObjectClassRetVal SetScaleFunction(
+    
+            BaseObjectClass & SetXScale(float xScale);
+    
+            BaseObjectClass & SetYScale(float yScale);
+    
+            BaseObjectClass & SetZScale(float zScale);
+    
+            BaseObjectClass & SetScaleFunction(
                 ScaleFunction newScaleFunction);
             
-            BaseObjectClassRetVal PerformTranslationAndRotation(
+            BaseObjectClassRetVal PerformTransformation(
                 bool reverse = false);
             
             BaseObjectClassRetVal Execute();

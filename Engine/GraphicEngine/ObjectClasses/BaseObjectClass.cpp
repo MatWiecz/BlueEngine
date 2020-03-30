@@ -55,39 +55,35 @@ namespace MatWiecz
             Destroy();
         }
         
-        BaseObjectClassRetVal BaseObjectClassClass::Create(
-            BaseObjectClass *parentObject, std::string objectName,
-            float xPos, float yPos, float zPos,
-            float xAngle, float yAngle, float zAngle,
-            float xScale, float yScale, float zScale,
-            TransformationOrderMode transformationOrderMode)
+        BaseObjectClass &BaseObjectClassClass::Create(
+            BaseObjectClass *parentObject, std::string objectName)
         {
             if (int(flags & ObjectCreated))
-                return BaseObjectClassRetVal::InvalidOperation;
+            {
+                //return BaseObjectClassRetVal::InvalidOperation;
+                return *this;
+            }
             if (parentObject == nullptr || !parentObject->IsCreated() ||
                 objectName.empty())
-                return BaseObjectClassRetVal::InvalidArgument;
+            {
+                //return BaseObjectClassRetVal::InvalidArgument;
+                return *this;
+            }
             id = nextId++;
             parent = parentObject;
             parent->children[id] = this;
             name = objectName;
-            pos[0] = xPos;
-            pos[1] = yPos;
-            pos[2] = zPos;
-            angle[0] = xAngle;
-            angle[1] = yAngle;
-            angle[2] = zAngle;
-            scale[0] = xScale;
-            scale[1] = yScale;
-            scale[2] = zScale;
-            transOrderMode = transformationOrderMode;
+            pos[0] = pos[1] = pos[2] = 0.0f;
+            angle[0] = angle[1] = angle[2] = 0.0f;
+            scale[0] = scale[1] = scale[2] = 1.0f;
+            transOrderMode = TransformationOrderMode::TRS;
             posFunction = nullptr;
             angleFunction = nullptr;
             scaleFunction = nullptr;
             objectFunction = nullptr;
             flags |= ObjectCreated | ObjectVisible | ObjectShowPoints |
                      ObjectShowEdges | ObjectShowFaces;
-            return BaseObjectClassRetVal::Success;
+            return *this;
         }
         
         bool BaseObjectClassClass::IsCreated()
@@ -111,13 +107,16 @@ namespace MatWiecz
             return children;
         }
         
-        BaseObjectClassRetVal
+        BaseObjectClass &
         BaseObjectClassClass::UpdateFlags(BaseObjectClassUpdateFlagsMode mode,
                                           BaseObjectClassFlags flagsMask,
                                           bool recursively)
         {
             if (int(~flags & ObjectCreated))
-                return BaseObjectClassRetVal::InvalidOperation;
+            {
+                //return BaseObjectClassRetVal::InvalidOperation;
+                return *this;
+            }
             flagsMask &= ~ObjectCreated;
             switch (mode)
             {
@@ -134,74 +133,134 @@ namespace MatWiecz
             if (recursively)
                 for (auto &child : children)
                     child.second->UpdateFlags(mode, flagsMask, true);
-            return BaseObjectClassRetVal::Success;
+            return *this;
         }
         
-        BaseObjectClassRetVal BaseObjectClassClass::SetObjectFunction(
+        BaseObjectClass &BaseObjectClassClass::SetObjectFunction(
             ObjectFunction newObjectFunction)
         {
-            if (int(~flags & ObjectCreated))
-                return BaseObjectClassRetVal::InvalidOperation;
             objectFunction = newObjectFunction;
-            return BaseObjectClassRetVal::Success;
+            return *this;
         }
         
-        BaseObjectClassRetVal BaseObjectClassClass::SetPos(
+        BaseObjectClass &BaseObjectClassClass::SetPos(
             float xPos, float yPos, float zPos)
         {
             pos[0] = xPos;
             pos[1] = yPos;
             pos[2] = zPos;
-            return BaseObjectClassRetVal::Success;
+            return *this;
         }
         
-        BaseObjectClassRetVal BaseObjectClassClass::SetPosFunction(
+        BaseObjectClass &BaseObjectClassClass::SetXPos(
+            float xPos)
+        {
+            pos[0] = xPos;
+            return *this;
+        }
+        
+        BaseObjectClass &BaseObjectClassClass::SetYPos(
+            float yPos)
+        {
+            pos[1] = yPos;
+            return *this;
+        }
+        
+        BaseObjectClass &BaseObjectClassClass::SetZPos(
+            float zPos)
+        {
+            pos[2] = zPos;
+            return *this;
+        }
+        
+        BaseObjectClass &BaseObjectClassClass::SetPosFunction(
             PosFunction newPosFunction)
         {
-            if (int(~flags & ObjectCreated))
-                return BaseObjectClassRetVal::InvalidOperation;
             posFunction = newPosFunction;
-            return BaseObjectClassRetVal::Success;
+            return *this;
         }
         
-        BaseObjectClassRetVal BaseObjectClassClass::SetAngle(
+        BaseObjectClass &BaseObjectClassClass::SetAngle(
             float xAngle, float yAngle, float zAngle)
         {
             angle[0] = xAngle;
             angle[2] = yAngle;
             angle[2] = zAngle;
-            return BaseObjectClassRetVal::Success;
+            return *this;
         }
         
-        BaseObjectClassRetVal BaseObjectClassClass::SetAngleFunction(
+        BaseObjectClass &BaseObjectClassClass::SetXAngle(
+            float xAngle)
+        {
+            angle[0] = xAngle;
+            return *this;
+        }
+        
+        BaseObjectClass &BaseObjectClassClass::SetYAngle(
+            float yAngle)
+        {
+            angle[1] = yAngle;
+            return *this;
+        }
+        
+        BaseObjectClass &BaseObjectClassClass::SetZAngle(
+            float zAngle)
+        {
+            angle[2] = zAngle;
+            return *this;
+        }
+        
+        BaseObjectClass &BaseObjectClassClass::SetAngleFunction(
             AngleFunction newAngleFunction)
         {
-            if (int(~flags & ObjectCreated))
-                return BaseObjectClassRetVal::InvalidOperation;
             angleFunction = newAngleFunction;
-            return BaseObjectClassRetVal::Success;
+            return *this;
         }
         
-        BaseObjectClassRetVal BaseObjectClassClass::SetScale
+        BaseObjectClass &BaseObjectClassClass::SetScale
             (float xScale, float yScale, float zScale)
         {
+            if (xScale == 0.0f || yScale == 0.0f || zScale == 0.0f)
+                return *this;
             scale[0] = xScale;
             scale[1] = yScale;
             scale[2] = zScale;
-            return BaseObjectClassRetVal::Success;
+            return *this;
         }
         
-        BaseObjectClassRetVal BaseObjectClassClass::SetScaleFunction(
+        BaseObjectClass &BaseObjectClassClass::SetXScale
+            (float xScale)
+        {
+            if (xScale != 0.0f)
+                scale[0] = xScale;
+            return *this;
+        }
+    
+        BaseObjectClass &BaseObjectClassClass::SetYScale
+            (float yScale)
+        {
+            if (yScale != 0.0f)
+                scale[1] = yScale;
+            return *this;
+        }
+    
+        BaseObjectClass &BaseObjectClassClass::SetZScale
+            (float zScale)
+        {
+            if (zScale != 0.0f)
+                scale[2] = zScale;
+            return *this;
+        }
+        
+        BaseObjectClass &BaseObjectClassClass::SetScaleFunction(
             ScaleFunction newScaleFunction)
         {
-            if (int(~flags & ObjectCreated))
-                return BaseObjectClassRetVal::InvalidOperation;
             scaleFunction = newScaleFunction;
-            return BaseObjectClassRetVal::Success;
+            return *this;
         }
         
         BaseObjectClassRetVal
-        BaseObjectClassClass::PerformTranslationAndRotation(
+        BaseObjectClassClass::PerformTransformation(
             bool reverse)
         {
             if (int(~flags & ObjectCreated))
@@ -307,7 +366,7 @@ namespace MatWiecz
             if (int(~flags & ObjectCreated))
                 return BaseObjectClassRetVal::InvalidOperation;
             glPushMatrix();
-            PerformTranslationAndRotation();
+            PerformTransformation();
             if (objectFunction != nullptr && int(flags & ObjectVisible))
             {
                 glPushMatrix();

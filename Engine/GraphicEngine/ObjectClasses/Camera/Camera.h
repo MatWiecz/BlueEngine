@@ -37,11 +37,9 @@ namespace MatWiecz
             
             public:
             CameraClass();
-    
-            BaseObjectClassRetVal CreateCamera(
-                BaseObjectClass *parentObject, std::string objectName,
-                float xPos, float yPos, float zPos,
-                float xAngle, float yAngle, float zAngle);
+            
+            Camera &CreateCamera(
+                BaseObjectClass *parentObject, std::string objectName);
             
             BaseObjectClassRetVal SetUpPerspectiveCamera(
                 float shootingAngle, float zNear, float zFar);
@@ -53,7 +51,7 @@ namespace MatWiecz
             
             BaseObjectClassRetVal PerformViewTransformation();
             
-            static void DrawFunction(const BaseObjectClass & object);
+            static void DrawFunction(const BaseObjectClass &object);
             
         };
     };

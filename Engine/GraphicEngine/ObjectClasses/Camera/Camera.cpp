@@ -8,26 +8,21 @@ namespace MatWiecz
 {
     namespace BlueEngine
     {
-        CameraClass::CameraClass(): mode(CameraMode::Perspective),
-                                    shootingAngleParam(90.0f),
-                                    widthParam(0.0f),
-                                    zNearParam(1.0f),
-                                    zFarParam(1000.0f)
+        CameraClass::CameraClass()
         {
         }
-    
-        BaseObjectClassRetVal CameraClass::CreateCamera(
-            BaseObjectClass *parentObject, std::string objectName, float xPos,
-            float yPos, float zPos, float xAngle, float yAngle, float zAngle)
-        {
-            BaseObjectClassRetVal retVal = Create(parentObject, objectName,
-                                                  xPos, yPos, zPos,
-                                                  xAngle, yAngle, zAngle,
-                                                  1.0f, 1.0f, 1.0f);
-            if(retVal == BaseObjectClassRetVal::Success)
-                objectFunction = Camera::DrawFunction;
-            return retVal;
         
+        Camera &CameraClass::CreateCamera(
+            BaseObjectClass *parentObject, std::string objectName)
+        {
+            Create(parentObject, objectName);
+            mode = CameraMode::Perspective;
+            shootingAngleParam = 90.0f;
+            widthParam = 0.0f;
+            zNearParam = 1.0f;
+            zFarParam = 1000.0f;
+            objectFunction = Camera::DrawFunction;
+            return *this;
         }
         
         BaseObjectClassRetVal CameraClass::SetUpPerspectiveCamera(
@@ -86,16 +81,16 @@ namespace MatWiecz
         {
             if (!IsCreated())
                 return BaseObjectClassRetVal::InvalidOperation;
-            BaseObjectClass * currentObject = this;
-            while(currentObject != nullptr)
+            BaseObjectClass *currentObject = this;
+            while (currentObject != nullptr)
             {
-                currentObject->PerformTranslationAndRotation(true);
+                currentObject->PerformTransformation(true);
                 currentObject = currentObject->GetParent();
             }
             return BaseObjectClassRetVal::Success;
         }
         
-        void CameraClass::DrawFunction(const BaseObjectClass & object)
+        void CameraClass::DrawFunction(const BaseObjectClass &object)
         {
             //const float length = 1000000.0f;
             //glBegin(GL_LINES);

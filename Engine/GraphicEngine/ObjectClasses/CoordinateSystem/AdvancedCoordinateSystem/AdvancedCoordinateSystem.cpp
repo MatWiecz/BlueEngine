@@ -13,26 +13,26 @@ namespace MatWiecz
         {
         }
         
-        BaseObjectClassRetVal
+        AdvancedCoordinateSystem &
         AdvancedCoordinateSystemClass::CreateAdvancedCoordinateSystem(
-            BaseObjectClass *parentObject, std::string objectName, float xPos,
-            float yPos, float zPos, float xAngle, float yAngle, float zAngle,
-            GLfloat axisLength, bool showValues)
+            BaseObjectClass *parentObject, std::string objectName)
         {
-            BaseObjectClassRetVal retVal = CreateCoordinateSystem
-                (parentObject, objectName, xPos, yPos, zPos, xAngle, yAngle,
-                 zAngle, axisLength);
-            if(retVal != BaseObjectClassRetVal::Success)
-                return retVal;
+            CreateCoordinateSystem(parentObject, objectName);
             objectFunction = AdvancedCoordinateSystem::DrawFunction;
-            showValuesFlag = showValues;
-            return retVal;
+            showValues = false;
+            return *this;
         }
-    
+        
+        AdvancedCoordinateSystem &AdvancedCoordinateSystem::ShowValues(bool on)
+        {
+            showValues = on;
+            return *this;
+        }
+        
         void AdvancedCoordinateSystemClass::DrawFunction(
             const BaseObjectClass &object)
         {
-            const auto & coordinateSystem = (AdvancedCoordinateSystem &) object;
+            const auto &coordinateSystem = (AdvancedCoordinateSystem &) object;
             CoordinateSystem::DrawFunction(object);
             
         }

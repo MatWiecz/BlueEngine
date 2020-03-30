@@ -22,24 +22,23 @@ namespace MatWiecz
         class CoordinateSystemClass: public BaseObjectClass
         {
             protected:
-            GLfloat length;
+            float length;
             
             static void SetLineColor(BaseObjectClassFlags flags,
-                              GLfloat red, GLfloat green, GLfloat blue);
+                                     GLfloat red, GLfloat green, GLfloat blue);
             
             public:
             
             CoordinateSystemClass();
+    
+            CoordinateSystem & CreateOrigin(std::string objectName);
             
-            BaseObjectClassRetVal CreateOrigin(std::string objectName);
+            CoordinateSystem &CreateCoordinateSystem(
+                BaseObjectClass *parentObject, std::string objectName);
     
-            BaseObjectClassRetVal CreateCoordinateSystem(
-                BaseObjectClass *parentObject, std::string objectName,
-                float xPos, float yPos, float zPos,
-                float xAngle, float yAngle, float zAngle,
-                GLfloat axisLength = 1000000.0f);
-    
-            static void DrawFunction(const BaseObjectClass & object);
+            CoordinateSystem & SetAxisLength(float axisLength);
+            
+            static void DrawFunction(const BaseObjectClass &object);
         };
     }
 }
