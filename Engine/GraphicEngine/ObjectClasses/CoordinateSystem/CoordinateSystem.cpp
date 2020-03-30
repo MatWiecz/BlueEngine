@@ -26,8 +26,12 @@ namespace MatWiecz
             angle[0] = 0.0f;
             angle[2] = 0.0f;
             angle[2] = 0.0f;
+            scale[0] = 1.0f;
+            scale[1] = 1.0f;
+            scale[2] = 1.0f;
             posFunction = nullptr;
             angleFunction = nullptr;
+            scaleFunction = nullptr;
             objectFunction = CoordinateSystem::DrawFunction;
             flags |= ObjectCreated | ObjectVisible | ObjectShowPoints |
                      ObjectShowEdges | ObjectShowFaces;
