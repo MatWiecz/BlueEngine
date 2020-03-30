@@ -8,6 +8,40 @@ namespace MatWiecz
 {
     namespace BlueEngine
     {
+        void BaseObjectClassClass::PerformTranslation()
+        {
+            glTranslatef(pos[0], pos[1], pos[2]);
+        }
+        
+        void BaseObjectClassClass::PerformReversedTranslation()
+        {
+            glTranslatef(-pos[0], -pos[1], -pos[2]);
+        }
+        
+        void BaseObjectClassClass::PerformRotation()
+        {
+            glRotatef(angle[0], 1.0f, 0.0f, 0.0f);
+            glRotatef(angle[1], 0.0f, 1.0f, 0.0f);
+            glRotatef(angle[2], 0.0f, 0.0f, 1.0f);
+        }
+        
+        void BaseObjectClassClass::PerformReversedRotation()
+        {
+            glRotatef(-angle[2], 0.0f, 0.0f, 1.0f);
+            glRotatef(-angle[1], 0.0f, 1.0f, 0.0f);
+            glRotatef(-angle[0], 1.0f, 0.0f, 0.0f);
+        }
+        
+        void BaseObjectClassClass::PerformScaling()
+        {
+            glScalef(scale[0], scale[1], scale[2]);
+        }
+        
+        void BaseObjectClassClass::PerformReversedScaling()
+        {
+            glScalef(1.0f / scale[0], 1.0f / scale[1], 1.0f / scale[2]);
+        }
+        
         unsigned int BaseObjectClassClass::nextId = 1;
         
         BaseObjectClassClass::BaseObjectClassClass(): id(0),
@@ -24,7 +58,9 @@ namespace MatWiecz
         BaseObjectClassRetVal BaseObjectClassClass::Create(
             BaseObjectClass *parentObject, std::string objectName,
             float xPos, float yPos, float zPos,
-            float xAngle, float yAngle, float zAngle)
+            float xAngle, float yAngle, float zAngle,
+            float xScale, float yScale, float zScale,
+            TransformationOrderMode transformationOrderMode)
         {
             if (int(flags & ObjectCreated))
                 return BaseObjectClassRetVal::InvalidOperation;
@@ -41,8 +77,13 @@ namespace MatWiecz
             angle[0] = xAngle;
             angle[1] = yAngle;
             angle[2] = zAngle;
+            scale[0] = xScale;
+            scale[1] = yScale;
+            scale[2] = zScale;
+            transOrderMode = transformationOrderMode;
             posFunction = nullptr;
             angleFunction = nullptr;
+            scaleFunction = nullptr;
             objectFunction = nullptr;
             flags |= ObjectCreated | ObjectVisible | ObjectShowPoints |
                      ObjectShowEdges | ObjectShowFaces;
@@ -141,6 +182,24 @@ namespace MatWiecz
             return BaseObjectClassRetVal::Success;
         }
         
+        BaseObjectClassRetVal BaseObjectClassClass::SetScale
+            (float xScale, float yScale, float zScale)
+        {
+            scale[0] = xScale;
+            scale[1] = yScale;
+            scale[2] = zScale;
+            return BaseObjectClassRetVal::Success;
+        }
+        
+        BaseObjectClassRetVal BaseObjectClassClass::SetScaleFunction(
+            ScaleFunction newScaleFunction)
+        {
+            if (int(~flags & ObjectCreated))
+                return BaseObjectClassRetVal::InvalidOperation;
+            scaleFunction = newScaleFunction;
+            return BaseObjectClassRetVal::Success;
+        }
+        
         BaseObjectClassRetVal
         BaseObjectClassClass::PerformTranslationAndRotation(
             bool reverse)
@@ -151,19 +210,94 @@ namespace MatWiecz
                 posFunction(pos);
             if (angleFunction != nullptr)
                 angleFunction(angle);
-            if (!reverse)
+            if (scaleFunction != nullptr)
+                scaleFunction(scale);
+            switch (transOrderMode)
             {
-                glTranslatef(pos[0], pos[1], pos[2]);
-                glRotatef(angle[0], 1.0f, 0.0f, 0.0f);
-                glRotatef(angle[1], 0.0f, 1.0f, 0.0f);
-                glRotatef(angle[2], 0.0f, 0.0f, 1.0f);
-            }
-            else
-            {
-                glRotatef(-angle[2], 0.0f, 0.0f, 1.0f);
-                glRotatef(-angle[1], 0.0f, 1.0f, 0.0f);
-                glRotatef(-angle[0], 1.0f, 0.0f, 0.0f);
-                glTranslatef(-pos[0], -pos[1], -pos[2]);
+                case TransformationOrderMode::TRS:
+                    if (!reverse)
+                    {
+                        PerformTranslation();
+                        PerformRotation();
+                        PerformScaling();
+                    }
+                    else
+                    {
+                        PerformReversedScaling();
+                        PerformReversedRotation();
+                        PerformReversedTranslation();
+                    }
+                    break;
+                case TransformationOrderMode::TSR:
+                    if (!reverse)
+                    {
+                        PerformTranslation();
+                        PerformScaling();
+                        PerformRotation();
+                    }
+                    else
+                    {
+                        PerformReversedRotation();
+                        PerformReversedScaling();
+                        PerformReversedTranslation();
+                    }
+                    break;
+                case TransformationOrderMode::RTS:
+                    if (!reverse)
+                    {
+                        PerformRotation();
+                        PerformTranslation();
+                        PerformScaling();
+                    }
+                    else
+                    {
+                        PerformReversedScaling();
+                        PerformReversedTranslation();
+                        PerformReversedRotation();
+                    }
+                    break;
+                case TransformationOrderMode::RST:
+                    if (!reverse)
+                    {
+                        PerformRotation();
+                        PerformScaling();
+                        PerformTranslation();
+                    }
+                    else
+                    {
+                        PerformReversedTranslation();
+                        PerformReversedScaling();
+                        PerformReversedRotation();
+                    }
+                    break;
+                case TransformationOrderMode::STR:
+                    if (!reverse)
+                    {
+                        PerformScaling();
+                        PerformTranslation();
+                        PerformRotation();
+                    }
+                    else
+                    {
+                        PerformReversedRotation();
+                        PerformReversedTranslation();
+                        PerformReversedScaling();
+                    }
+                    break;
+                case TransformationOrderMode::SRT:
+                    if (!reverse)
+                    {
+                        PerformScaling();
+                        PerformRotation();
+                        PerformTranslation();
+                    }
+                    else
+                    {
+                        PerformReversedTranslation();
+                        PerformReversedRotation();
+                        PerformReversedScaling();
+                    }
+                    break;
             }
             return BaseObjectClassRetVal::Success;
         }

@@ -44,7 +44,8 @@ namespace MatWiecz
                 return BaseObjectClassRetVal::InvalidArgument;
             BaseObjectClassRetVal retVal = Create(parentObject, objectName,
                                                   xPos, yPos, zPos,
-                                                  xAngle, yAngle, zAngle);
+                                                  xAngle, yAngle, zAngle,
+                                                  1.0f, 1.0f, 1.0f);
             if(retVal != BaseObjectClassRetVal::Success)
                 return retVal;
             objectFunction = CoordinateSystem::DrawFunction;

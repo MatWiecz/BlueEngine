@@ -23,6 +23,16 @@ namespace MatWiecz
             ToggleFlags
         } BaseObjectClassUpdateFlagsMode;
         
+        typedef enum class TransformationOrderModeEnum
+        {
+            TRS,
+            TSR,
+            RTS,
+            RST,
+            STR,
+            SRT
+        } TransformationOrderMode;
+        
         typedef class BaseObjectClassClass BaseObjectClass;
     }
 }
@@ -52,10 +62,25 @@ namespace MatWiecz
         
         typedef void (*AngleFunction)(float [3]);
         
+        typedef void (*ScaleFunction)(float [3]);
+        
         typedef void (*ObjectFunction)(const BaseObjectClass &);
         
         class BaseObjectClassClass
         {
+            private:
+            void PerformTranslation();
+            
+            void PerformRotation();
+            
+            void PerformScaling();
+            
+            void PerformReversedTranslation();
+            
+            void PerformReversedRotation();
+            
+            void PerformReversedScaling();
+            
             protected:
             static unsigned int nextId;
             unsigned int id;
@@ -64,9 +89,12 @@ namespace MatWiecz
             std::string name;
             float pos[3];
             float angle[3];
+            float scale[3];
+            TransformationOrderMode transOrderMode;
             ObjectFunction objectFunction;
             PosFunction posFunction;
             AngleFunction angleFunction;
+            ScaleFunction scaleFunction;
             std::map <unsigned int, BaseObjectClass *> children;
             
             public:
@@ -79,7 +107,11 @@ namespace MatWiecz
                                                  float xPos, float yPos,
                                                  float zPos,
                                                  float xAngle, float yAngle,
-                                                 float zAngle);
+                                                 float zAngle,
+                                                 float xScale, float yScale,
+                                                 float zScale,
+                                                 TransformationOrderMode transformationOrderMode =
+                                                 TransformationOrderMode::TRS);
             
             bool IsCreated();
             
@@ -87,7 +119,7 @@ namespace MatWiecz
             
             BaseObjectClass *GetParent();
             
-            const std::map <unsigned int, BaseObjectClass *> & GetChildren();
+            const std::map <unsigned int, BaseObjectClass *> &GetChildren();
             
             BaseObjectClassRetVal
             UpdateFlags(BaseObjectClassUpdateFlagsMode mode,
@@ -106,6 +138,12 @@ namespace MatWiecz
             
             BaseObjectClassRetVal SetAngleFunction(AngleFunction
                                                    newAngleFunction);
+            
+            BaseObjectClassRetVal SetScale(float xScale, float yScale,
+                                           float zScale);
+            
+            BaseObjectClassRetVal SetScaleFunction(
+                ScaleFunction newScaleFunction);
             
             BaseObjectClassRetVal PerformTranslationAndRotation(
                 bool reverse = false);
